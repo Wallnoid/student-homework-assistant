@@ -1,12 +1,13 @@
 'use client';
 import { LabelsSelect } from "@/features/editor/components/LabelsSelect";
 import { ListBulletIcon } from "@heroicons/react/24/solid";
+import type { NextPage } from 'next';
 
 
-export default function EditorLayout() {
+
+const Page: NextPage = () => {
     return (
         <section className=" w-full h-full p-28 ">
-
 
             <div className="flex flex-col gap-0 w-full h-fit  items-center ">
 
@@ -76,3 +77,6 @@ export default function EditorLayout() {
         </section>
     );
 }
+
+export default Page;
+

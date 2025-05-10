@@ -31,8 +31,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 
 
 	const styleOptions = {
 		filled: 'bg-gradient-to-br from-primary to-secondary',
-		outlined: 'bg-transparent border border-primary bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent',
-		text: 'bg-transparent bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent'
+		outlined: 'bg-transparent border border-primary bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text',
+		text: 'bg-transparent bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text'
 
 	}
 
