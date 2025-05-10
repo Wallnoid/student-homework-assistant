@@ -1,88 +1,193 @@
-'use client';
+'use client'
+import { CustomIconButton } from '@/shared/components/CustomIconButton';
+import { truncateText } from '@/shared/utils/string-utils';
+import { DocumentIcon, FolderIcon, MagnifyingGlassIcon, PlusCircleIcon, PlusIcon, SparklesIcon } from '@heroicons/react/24/solid';
+import { Card, Typography } from '@material-tailwind/react';
+import type { NextPage } from 'next';
 
-import Image from "next/image";
-import { Button } from "@material-tailwind/react";
 
+const Page: NextPage = () => {
 
-export default function Home() {
+  const textGradient = 'bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text'
+
+  const info = [{
+    title: 'Lorem ipsum dolor sit amet consectetur adipiscing elit asdfs sdfsdf sdfsd'
+  },
+  {
+    title: 'Lorem ipsum dolor sit amet consectetur adipiscing elit'
+  },
+  {
+    title: 'Lorem ipsum dolor sit amet consectetur adipiscing elit'
+  },
+
+  ]
+
+  const documents = [
+    {
+      title: 'Documento 1',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat asdsd... '
+    },
+    {
+      title: 'Documento 2',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat asdsd... '
+    }
+  ]
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <section className='w-full h-full  p-5 flex flex-col gap-16 '>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+      {/* Principal Title */}
+      <Typography
+        className={`${textGradient}`}
+        variant="h2">Bienvenido William!</Typography>
 
-          <Button className="hover:bg-blue-500  duration-1000"
-            color="blue"
-          >Button ASDFASDFA</Button>
+
+      {/* Quick questions section for AI */}
+
+      <div className='flex flex-col w-full gap-5'>
+        <div className='flex flex-row w-full items-center gap-3'>
+
+          <SparklesIcon className='size-7 text-primary' />
+
+          <Typography
+            className={`${textGradient} font-semibold`}
+            variant="h4">Consulta Rápida con IA</Typography>
+
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+
+
+        <div className='flex flex-row gap-2 justify-between items-center '>
+
+          <div className="grid grid-cols-2 gap-4">
+
+            {
+              info.map((info, index) => {
+                return (
+                  <Card
+                    key={index}
+                    className='flex flex-row gap-2 p-3 pt-0 pl-0 pb-2  '
+                  >
+                    <div className='h-8 w-9 bg-gradient-to-br from-primary to-secondary rounded-tl-lg rounded-br-lg p-1 '>
+
+                      <MagnifyingGlassIcon className='size-full text-white' />
+
+                    </div>
+
+                    <Typography
+                      variant='paragraph'>
+
+                      {truncateText(info.title, 60)}
+                    </Typography>
+                  </Card>
+
+                )
+              })
+            }
+          </div>
+
+          <Card className='w-[10%] flex items-center h-full justify-center  hover:scale-105 duration-500 hover:bg-secondary '>
+
+            <CustomIconButton
+              onClick={() => {
+
+              }}
+              size='lg'
+              roundedFull
+            >
+              <PlusIcon className='size-full' />
+            </CustomIconButton>
+          </Card>
+
+
+
+        </div>
+
+
+      </div>
+
+
+      {/* Quick questions section for AI */}
+
+
+      <div className='flex flex-col w-full gap-5'>
+        <div className='flex flex-row w-full items-center gap-3'>
+
+          <FolderIcon className='size-6 text-primary' />
+
+          <Typography
+            className={`${textGradient} font-semibold`}
+            variant="h4">Documentos Recientes</Typography>
+
+        </div>
+
+
+        <div className='flex flex-row gap-2 justify-between items-center '>
+
+          <div className="grid grid-cols-2 gap-7">
+
+            {
+              documents.map(({ title, content }, index) => {
+                return (
+                  <Card
+                    key={index}
+                    className='flex flex-col gap-2 py-3 px-5 max-w-96 '
+                  >
+                    <div className='w-full flex flex-row justify-between items-center'>
+
+                      <Typography
+                        variant='h5'
+                        className='font-normal'
+                      >
+
+                        {truncateText(title, 50)}
+                      </Typography>
+
+                      <DocumentIcon className='size-6 text-secondary' />
+
+                    </div>
+
+                    <hr className="my-2 border border-primary" />
+
+                    <Typography
+                      variant='paragraph'
+                      className='font-normal'
+                    >
+
+                      {truncateText(content, 250)}
+                    </Typography>
+                  </Card>
+
+                )
+              })
+            }
+          </div>
+
+          <Card className='w-[10%] flex items-center h-full justify-center  hover:scale-105 duration-500 hover:bg-secondary '>
+
+            <CustomIconButton
+              onClick={() => {
+
+              }}
+              size='lg'
+              roundedFull
+            >
+              <PlusIcon className='size-full' />
+            </CustomIconButton>
+          </Card>
+
+
+
+        </div>
+
+
+      </div>
+
+
+
+
+
+    </section>
+  )
 }
+
+export default Page;
