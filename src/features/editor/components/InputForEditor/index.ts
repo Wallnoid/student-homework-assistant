@@ -1,0 +1,1 @@
+export { default as InputForEditor } from './InputForEditor';
