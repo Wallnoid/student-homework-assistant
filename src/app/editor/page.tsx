@@ -1,11 +1,28 @@
 'use client';
+import { InputForEditor } from "@/features/editor/components/InputForEditor";
+import { InputIAForEditor } from "@/features/editor/components/InputIAForEditor";
 import { LabelsSelect } from "@/features/editor/components/LabelsSelect";
+import { useInputForEditor } from "@/features/editor/hooks/useInputForEditor.hook";
 import { ListBulletIcon } from "@heroicons/react/24/solid";
 import type { NextPage } from 'next';
+import { useRef, useState } from "react";
+
 
 
 
 const Page: NextPage = () => {
+
+
+    const { inputRefs, inputs, handleKeyDown, setInputs } = useInputForEditor()
+
+
+    const handleChange = (index: number, value: string) => {
+        const updatedInputs = [...inputs];
+        updatedInputs[index].value = value;
+        setInputs(updatedInputs);
+    };
+
+
     return (
         <section className=" w-full h-full p-28 ">
 
@@ -46,31 +63,31 @@ const Page: NextPage = () => {
 
                 <div className="flex flex-col gap-2 w-full h-full ">
 
-                    <textarea name="principal-text" id="principal-text"
-                        className="text-lg overflow-hidden text-gray-800 font-normal w-full border-none outline-none ring-0 focus:ring-0 focus:outline-none resize-none py-1"
-                        placeholder="Ingresa el texto..."
-                        rows={1}
-                        onInputCapture={(e) => {
-                            const target = e.target as HTMLTextAreaElement;
-                            target.style.height = 'auto';
-                            target.style.height = `${target.scrollHeight}px`;
-                        }
+                    {inputs.map((input, index) => {
+
+                        if (input.type == 'input') {
+                            return (
+                                <InputForEditor
+                                    key={input.id}
+                                    value={input.value}
+                                    inputRef={(el) => (inputRefs.current[index] = el)}
+                                    onChange={(val) => handleChange(index, val)}
+                                    onKeyDown={(e) => handleKeyDown(e, index)}
+                                />
+                            )
                         }
 
-                    />
+                        return (
+
+                            <InputIAForEditor
+                                key={index} />
+                        )
+                    }
+                    )}
+
 
 
                 </div>
-
-
-
-
-
-
-
-
-
-
 
             </div>
 
