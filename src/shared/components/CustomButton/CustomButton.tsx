@@ -20,12 +20,15 @@ export type CustomButtonProps = {
 	//circular button
 	roundedFull?: boolean
 
+	//full width
+	fullWidth?: boolean
+
 	//function to be executed when the button is activated
 	onClick: () => void
 
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 'md', label, backgroundColor, onClick, roundedFull = false }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 'md', label, backgroundColor, onClick, roundedFull = false, fullWidth = false }) => {
 
 
 
@@ -40,6 +43,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 
 	if (backgroundColor && backgroundColor != 'none') {
 		return (
 			<Button
+				fullWidth={fullWidth}
 				onClick={onClick}
 				variant={variant}
 				size={size}
@@ -55,6 +59,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 
 
 	return (
 		<Button
+			fullWidth={fullWidth}
 			onClick={onClick}
 			variant={variant}
 			size={size}
