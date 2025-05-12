@@ -24,9 +24,11 @@ import {
 	HomeIcon,
 	BookOpenIcon,
 	DocumentTextIcon,
+	ShieldCheckIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon, Cog8ToothIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export type SidebarProps = {
 	// types...
@@ -35,10 +37,17 @@ export type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ }) => {
 	const [open, setOpen] = useState(1);
 
+	const pathname = usePathname();
 
 	const handleOpen = (value: number) => {
 		setOpen(open === value ? 0 : value);
 	};
+
+	const isActive = (path: string) => {
+		return pathname === path;
+	}
+
+	const router = useRouter();
 
 	return (
 		<Card className="h-full w-full rounded-xs rounded-r-2xl  max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/10 relative ">
@@ -242,11 +251,13 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						</div>
 					</MenuHandler>
 					<MenuList>
-						<MenuItem className="flex items-center gap-2">
-							<UserCircleIcon className="size-5" />
+						<MenuItem className="flex items-center gap-2" onClick={() => {
+							router.push('/admin/students');
+						}}>
+							<ShieldCheckIcon className="size-5" />
 
 							<Typography variant="small" className="font-medium">
-								Perfil
+								Administración
 							</Typography>
 						</MenuItem>
 						<MenuItem className="flex items-center gap-2">
@@ -260,7 +271,10 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 
 
 						<hr className="my-2 border-blue-gray-50" />
-						<MenuItem className="flex items-center gap-2 ">
+
+						<MenuItem className="flex items-center gap-2 " onClick={() => {
+							router.push('/login');
+						}}>
 							<svg
 								width="16"
 								height="14"

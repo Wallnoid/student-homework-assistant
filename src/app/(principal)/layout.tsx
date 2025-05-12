@@ -1,8 +1,8 @@
 'use client'
 
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Sidebar } from "../shared/components/Sidebar";
+import "../globals.css";
+import { Sidebar } from "../../shared/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
