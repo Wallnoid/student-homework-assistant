@@ -104,7 +104,7 @@ const Page: NextPage = () => {
       </div>
 
 
-      {/* Quick questions section for AI */}
+      {/*Recent documents section */}
 
 
       <div className='flex flex-col w-full gap-5'>
@@ -174,16 +174,6 @@ const Page: NextPage = () => {
 
           </Card>
         </div>
-        {/* 
-          <Card className='w-[10%] flex items-center h-full justify-center  hover:scale-105 duration-500 hover:bg-secondary '>
-
-          
-          </Card> */}
-
-
-
-
-
 
       </div>
 
