@@ -56,57 +56,55 @@ const Page: NextPage = () => {
         </div>
 
 
-        <div className='flex flex-row gap-2 justify-between items-center '>
 
-          <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
 
-            {
-              info.map((info, index) => {
-                return (
-                  <Card
-                    key={index}
-                    className='flex flex-row gap-2 p-3 pt-0 pl-0 pb-2  '
+          {
+            info.map((info, index) => {
+              return (
+                <Card
+                  key={index}
+                  className='flex flex-row gap-2 p-3 pt-0 pl-0 pb-2  hover:scale-105 duration-700  group hover:cursor-pointer    '
+                >
+                  <div className='h-8 w-9 bg-gradient-to-br from-primary to-secondary rounded-tl-lg rounded-br-lg p-1 '>
+
+                    <MagnifyingGlassIcon className='size-full text-white ' />
+
+                  </div>
+
+                  <Typography
+                    variant='paragraph'
+                    className='group-hover:text-primary'
                   >
-                    <div className='h-8 w-9 bg-gradient-to-br from-primary to-secondary rounded-tl-lg rounded-br-lg p-1 '>
 
-                      <MagnifyingGlassIcon className='size-full text-white' />
 
-                    </div>
+                    {truncateText(info.title, 60)}
+                  </Typography>
+                </Card>
 
-                    <Typography
-                      variant='paragraph'>
+              )
+            })
+          }
 
-                      {truncateText(info.title, 60)}
-                    </Typography>
-                  </Card>
-
-                )
-              })
-            }
-          </div>
-
-          <Card className='w-[10%] flex items-center h-full justify-center  hover:scale-105 duration-500 hover:bg-secondary '>
-
+          <Card
+            className='flex flex-row items-center justify-center gap-2 p-1 hover:scale-105 duration-700 hover:bg-secondary hover:cursor-pointer'
+          >
             <CustomIconButton
               onClick={() => {
 
               }}
-              size='lg'
+              size='sm'
               roundedFull
             >
               <PlusIcon className='size-full' />
             </CustomIconButton>
+
           </Card>
-
-
-
         </div>
-
-
       </div>
 
 
-      {/* Quick questions section for AI */}
+      {/*Recent documents section */}
 
 
       <div className='flex flex-col w-full gap-5'>
@@ -121,49 +119,49 @@ const Page: NextPage = () => {
         </div>
 
 
-        <div className='flex flex-row gap-2 justify-between items-center '>
 
-          <div className="grid grid-cols-2 gap-7">
+        <div className="grid grid-cols-3 gap-7">
 
-            {
-              documents.map(({ title, content }, index) => {
-                return (
-                  <Card
-                    key={index}
-                    className='flex flex-col gap-2 py-3 px-5 max-w-96 '
-                  >
-                    <div className='w-full flex flex-row justify-between items-center'>
-
-                      <Typography
-                        variant='h5'
-                        className='font-normal'
-                      >
-
-                        {truncateText(title, 50)}
-                      </Typography>
-
-                      <DocumentIcon className='size-6 text-secondary' />
-
-                    </div>
-
-                    <hr className="my-2 border border-primary" />
+          {
+            documents.map(({ title, content }, index) => {
+              return (
+                <Card
+                  key={index}
+                  className='flex flex-col gap-2 py-3 px-5 max-w-96 hover:scale-105 duration-700  hover:cursor-pointer group'
+                >
+                  <div className='w-full flex flex-row justify-between items-center group-hover:text-primary'>
 
                     <Typography
-                      variant='paragraph'
+                      variant='h5'
                       className='font-normal'
                     >
 
-                      {truncateText(content, 250)}
+                      {truncateText(title, 50)}
                     </Typography>
-                  </Card>
 
-                )
-              })
-            }
-          </div>
+                    <DocumentIcon className='size-6 text-secondary group-hover:text-primary' />
 
-          <Card className='w-[10%] flex items-center h-full justify-center  hover:scale-105 duration-500 hover:bg-secondary '>
+                  </div>
 
+                  <hr className="my-2 border border-primary" />
+
+                  <Typography
+                    variant='paragraph'
+                    className='font-normal '
+                  >
+
+                    {truncateText(content, 250)}
+                  </Typography>
+                </Card>
+
+              )
+            })
+          }
+
+          <Card
+
+            className='flex flex-col justify-center items-center gap-2 py-3 px-5 max-w-96  hover:scale-105 duration-500 hover:bg-secondary '
+          >
             <CustomIconButton
               onClick={() => {
 
@@ -173,12 +171,9 @@ const Page: NextPage = () => {
             >
               <PlusIcon className='size-full' />
             </CustomIconButton>
+
           </Card>
-
-
-
         </div>
-
 
       </div>
 
