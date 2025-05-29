@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import LabelsSelect from './LabelsSelect';
+import TagDropdown from './TagDropdown';
 
-describe('LabelsSelect', () => {
+describe('TagDropdown', () => {
     it('should render successfully', () => {
-        const { baseElement } = render(<LabelsSelect />);
+        const { baseElement } = render(<TagDropdown />);
 
         expect(baseElement).toBeTruthy();
     });

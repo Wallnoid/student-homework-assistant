@@ -1,6 +1,6 @@
 'use client'
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
-import { truncateText } from '@/shared/utils/string-utils';
+import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { DocumentIcon, FolderIcon, MagnifyingGlassIcon, PlusCircleIcon, PlusIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import { Card, Typography } from '@material-tailwind/react';
 import type { NextPage } from 'next';
@@ -52,10 +52,7 @@ const Page: NextPage = () => {
             className={`${textGradient} font-semibold`}
             variant="h4">Consulta Rápida con IA</Typography>
 
-
         </div>
-
-
 
         <div className="grid grid-cols-2 gap-4">
 

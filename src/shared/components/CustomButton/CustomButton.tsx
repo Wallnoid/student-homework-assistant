@@ -26,9 +26,16 @@ export type CustomButtonProps = {
 	//function to be executed when the button is activated
 	onClick: () => void
 
+	//loading state
+	loading?: boolean
+
+	// enable disable button
+	disabled?: boolean
+
+
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 'md', label, backgroundColor, onClick, roundedFull = false, fullWidth = false }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 'md', label, backgroundColor, onClick, roundedFull = false, fullWidth = false, loading = false, disabled = false }) => {
 
 
 
@@ -48,6 +55,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 
 				variant={variant}
 				size={size}
 				color={backgroundColor}
+				disabled={disabled}
+				loading={loading}
 				className={`${roundedFull ? 'rounded-full' : ''}`}
 			>
 				{label}
@@ -63,7 +72,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 
 			onClick={onClick}
 			variant={variant}
 			size={size}
-			className={`${styleOptions[variant]} ${roundedFull ? 'rounded-full' : ''} `}
+			className={`${styleOptions[variant]} ${roundedFull ? 'rounded-full' : ''}  flex items-center justify-center`}
+			disabled={disabled}
+			loading={loading}
+
 
 
 		>

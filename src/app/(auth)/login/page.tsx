@@ -6,17 +6,21 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Card, Checkbox, IconButton, Input, Typography } from '@material-tailwind/react';
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useFormLogin } from '@/features/login/hooks/useFormLogin.hook';
 
 const Page: NextPage = () => {
 
+
+
     const [showPassword, setShowPassword] = useState(false);
 
-    const router = useRouter();
+    const { register, handleSubmit, formState: { errors }, loading, error, onSubmit } = useFormLogin()
+
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);
     }
+
 
 
     return (
@@ -30,11 +34,11 @@ const Page: NextPage = () => {
 
                 <div className='w-full flex flex-col gap-3'>
 
-                    <Input label="Username/email" />
+                    <Input label="Username/email" {...register('email')} />
 
                     <div className='relative'>
 
-                        <Input type={showPassword ? 'text' : 'password'} label="Password" />
+                        <Input type={showPassword ? 'text' : 'password'} label="Password" {...register('password')} />
 
                         <div className='absolute right-0 top-0'>
 
@@ -52,18 +56,10 @@ const Page: NextPage = () => {
                         </div>
                     </div>
 
-
-                    <div className='w-full bg-amber-200 p-0'>
-
-                    </div>
-
                 </div>
 
 
-                <CustomButton label='Iniciar Sesión' fullWidth onClick={() => {
-                    console.log('Iniciar Sesión');
-                    router.push('/');
-                }} />
+                <CustomButton label='Iniciar Sesión' fullWidth onClick={handleSubmit(onSubmit)} loading={loading} disabled={loading} />
 
 
             </Card>

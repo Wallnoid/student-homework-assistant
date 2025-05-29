@@ -1,17 +1,20 @@
 "use client";
-import { IconButton, Spinner } from '@material-tailwind/react';
+import { Button } from '@material-tailwind/react';
 import { color } from '@material-tailwind/react/types/components/button';
 import React, { ReactNode } from 'react';
 
-export type CustomIconButtonProps = {
+export type CustomIconTextButtonProps = {
 	// button appearance variant
 	variant?: 'filled' | 'outlined' | 'text'
 
 	// This is the size of the button
 	size?: 'sm' | 'md' | 'lg'
 
-	//button content (required)
+	//button icon content (required)
 	children: ReactNode
+
+	//button text content (required)
+	text: string
 
 	//color that the button will have
 	backgroundColor?: color | 'none'
@@ -19,18 +22,11 @@ export type CustomIconButtonProps = {
 	//circular button
 	roundedFull?: boolean
 
-	//disabled button
-	disabled?: boolean
-
-	//loading button
-	loading?: boolean
-
 	//function to be executed when the button is activated
 	onClick: () => void
 }
 
-const CustomIconButton: React.FC<CustomIconButtonProps> = ({ variant = 'filled', size = 'md', children, backgroundColor, onClick, roundedFull = false, disabled = false, loading = false }) => {
-
+const CustomIconTextButton: React.FC<CustomIconTextButtonProps> = ({ variant = 'filled', size = 'md', children, backgroundColor, onClick, roundedFull = false, text }) => {
 
 	const styleOptions = {
 		filled: 'bg-gradient-to-br from-primary to-secondary',
@@ -42,48 +38,32 @@ const CustomIconButton: React.FC<CustomIconButtonProps> = ({ variant = 'filled',
 
 	if (backgroundColor && backgroundColor != 'none') {
 		return (
-			<IconButton
+			<Button
 				onClick={onClick}
 				variant={variant}
 				size={size}
 				color={backgroundColor}
-				disabled={disabled}
-
-
-
-				className={`${roundedFull ? 'rounded-full' : ''}`}
+				className={`${roundedFull ? 'rounded-full' : ''} flex items-center gap-2`}
 			>
-				{
-					loading ? (
-						<Spinner className='size-5' />
-					) : (
-						children
-					)
-				}
-			</IconButton>
+				{children} {text}
+			</Button>
 		)
 
 	}
 
 
 	return (
-		<IconButton
+		<Button
 			onClick={onClick}
 			variant={variant}
 			size={size}
-			className={`${styleOptions[variant]} ${roundedFull ? 'rounded-full' : ''}  flex items-center justify-center`}
-			disabled={disabled}
+			className={`${styleOptions[variant]} ${roundedFull ? 'rounded-full' : ''}  flex items-center justify-center gap-2`}
+
 
 		>
-			{
-				loading ? (
-					<Spinner className='size-5' color="gray" />
-				) : (
-					children
-				)
-			}
-		</IconButton>
+			{children} {text}
+		</Button>
 	);
 };
 
-export default CustomIconButton;
+export default CustomIconTextButton;

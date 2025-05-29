@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Card,
 	Typography,
@@ -25,10 +25,17 @@ import {
 	BookOpenIcon,
 	DocumentTextIcon,
 	ShieldCheckIcon,
+	PlusIcon,
 } from "@heroicons/react/24/solid";
-import { ChevronDownIcon, Cog8ToothIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, Cog8ToothIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { getNote, getUser } from '@/shared/utils/localStorage.utils';
+import { User } from '@/shared/models/user.model';
+import { useNotes } from '@/shared/hooks/useNotes.hook';
+import { Note } from '@/shared/models/note.model';
+import { truncateText } from '@/shared/utils/stringUtils.utils';
+import { useEditorStore } from '@/shared/store/note.store';
 
 export type SidebarProps = {
 	// types...
@@ -36,6 +43,10 @@ export type SidebarProps = {
 
 const Sidebar: React.FC<SidebarProps> = ({ }) => {
 	const [open, setOpen] = useState(1);
+
+	const [user, setUser] = useState<User | null>(null)
+
+	const [showNewNotenoteExists, setShowNewNote] = useState(true)
 
 	const pathname = usePathname();
 
@@ -48,6 +59,31 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 	}
 
 	const router = useRouter();
+
+	const { notes, loading, error } = useNotes()
+
+	const newNote = useEditorStore((state) => state.note);
+
+
+
+
+
+
+	useEffect(() => {
+		const user = getUser()
+		if (user) {
+			setUser(user)
+		}
+
+	}, [])
+
+
+	useEffect(() => {
+
+
+		setShowNewNote(pathname.includes('new'))
+
+	}, [pathname])
 
 	return (
 		<Card className="h-full w-full rounded-xs rounded-r-2xl  max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/10 relative ">
@@ -67,6 +103,18 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						<ListItemSuffix>
 							<Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
 						</ListItemSuffix>
+					</ListItem>
+				</Link>
+				<Link href={"/editor/new"}
+
+				>
+
+					<ListItem>
+						<ListItemPrefix>
+							<PlusIcon className="h-5 w-5" />
+						</ListItemPrefix>
+						Crear Nota
+
 					</ListItem>
 				</Link>
 				<Accordion
@@ -89,140 +137,66 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						</AccordionHeader>
 					</ListItem>
 					<AccordionBody className="py-1">
-						<List className="p-0 overflow-y-auto max-h-[calc(100vh-285px)]">
+						<List className="p-0 overflow-y-auto max-h-[calc(100vh-330px)]">
 
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
-								</ListItem>
-							</Link>
-							<Link href={"/editor"}>
-								<ListItem >
-									<ListItemPrefix>
-										<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
-									</ListItemPrefix>
-									Analytics
+							{
+								showNewNotenoteExists && (
+									<Link
+										key={newNote.id}
+										href={`/editor/new`}>
+										<ListItem >
+											<ListItemPrefix>
+												<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
+											</ListItemPrefix>
+											{newNote.title !== "" ? truncateText(newNote.title, 20) : 'New Note'}
+											<ListItemSuffix>
+												<Chip value="N" size="sm" variant="ghost" color="green" className="rounded-full" />
+											</ListItemSuffix>
+										</ListItem>
+									</Link>
 
-									<ListItemSuffix>
-										<Spinner className="size-5" />
-									</ListItemSuffix>
-								</ListItem>
-							</Link>
+
+								)
+							}
+
+							{loading ?
+								(
+									<div className='flex items-center w-full justify-center gap-2 text-gray-500  mt-2'><Spinner color='gray' className='size-3' /> Loading</div>
+								) :
+								(
+									notes.length === 0 ? (
+										<div className='flex items-center w-full justify-center gap-1 text-gray-500  mt-2'> <ExclamationTriangleIcon className='size-4' /> No documents</div>
+									) : (
+
+										notes.toReversed()?.map(({ title, id }: Note) => {
+											return (
+												<Link
+													key={id}
+													href={`/editor/${id}`}>
+													<ListItem >
+														<ListItemPrefix>
+															<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
+														</ListItemPrefix>
+														{truncateText(title, 20)}
+													</ListItem>
+												</Link>
+											)
+										})
+									)
+								)
+
+							}
+
+
+
+
+
+
+
 
 						</List>
 					</AccordionBody>
 				</Accordion>
-
-
-
-
 			</List>
 
 			<div className="absolute bottom-0 left-0 w-full p-4 bg-white ">
@@ -237,9 +211,9 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 
 								/>
 								<div>
-									<Typography variant="h6">Tania Andrew</Typography>
+									<Typography variant="h6">{user?.name} {user?.lastName}</Typography>
 									<Typography variant="small" color="gray" className="font-normal">
-										Web Developer
+										{user?.role}
 									</Typography>
 								</div>
 
