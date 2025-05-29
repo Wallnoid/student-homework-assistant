@@ -1,3 +1,4 @@
+import { NoteTag } from "./tag.model";
 
 export interface Line {
     id?: number;
@@ -11,6 +12,7 @@ export interface Note {
     title: string;
     content: string;
     tagsIds: number[]
+    tags?: NoteTag[]
     createdAt?: string;
     updatedAt?: string;
     userId?: number;

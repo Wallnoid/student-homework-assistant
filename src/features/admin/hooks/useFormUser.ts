@@ -1,11 +1,12 @@
-import { CreateUserResponse, Role } from "@/shared/models/user.model"
+import { CreateUserResponse, Role, User } from "@/shared/models/user.model"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { createMembers } from "../services/members-service"
+import { createMembers, updateMember } from "../services/members.service"
 import { AxiosError } from "axios"
 
 
 type InputUser = {
+    id?: number
     name: string
     lastName: string
     email: string
@@ -16,7 +17,7 @@ type InputUser = {
 
 
 
-export const useFormUser = ({ onSuccess }: { onSuccess: () => void }) => {
+export const useFormUser = ({ onSuccess, student }: { onSuccess: () => void, student?: User }) => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<InputUser>()
 
     const [loading, setLoading] = useState(false)
@@ -24,7 +25,6 @@ export const useFormUser = ({ onSuccess }: { onSuccess: () => void }) => {
     const [error, setError] = useState<string | null>(null)
 
     const reset = () => {
-        console.log('reset')
         setValue('name', '')
         setValue('lastName', '')
         setValue('email', '')
@@ -35,10 +35,21 @@ export const useFormUser = ({ onSuccess }: { onSuccess: () => void }) => {
 
     useEffect(() => {
         setValue('role', Role.USER)
+
+        if (student) {
+            setValue('name', student.name)
+            setValue('lastName', student.lastName)
+            setValue('email', student.email)
+            setValue('role', student.role!)
+        }
     }, [])
 
 
     const onSubmit = (data: InputUser) => {
+
+        if (student) {
+            data.id = student.id
+        }
 
         const user = {
             ...data,
@@ -50,19 +61,31 @@ export const useFormUser = ({ onSuccess }: { onSuccess: () => void }) => {
 
         setLoading(true)
 
-        createMembers(user).then((res: CreateUserResponse) => {
-            console.log(res)
-            setLoading(false)
-            setError(null)
-            onSuccess()
-        }).catch((err: AxiosError) => {
-            console.log(err)
-            setLoading(false)
-            onSuccess()
+        if (student) {
+            updateMember(user).then((res: CreateUserResponse) => {
+                console.log(res)
+                setLoading(false)
+                setError(null)
+                onSuccess()
+            }).catch((err: AxiosError) => {
+                console.log(err)
+                setLoading(false)
+                setError((err.response?.data as CreateUserResponse).message.content[0])
+            })
+        } else {
 
+            createMembers(user).then((res: CreateUserResponse) => {
+                console.log(res)
+                setLoading(false)
+                setError(null)
+                onSuccess()
+            }).catch((err: AxiosError) => {
+                console.log(err)
+                setLoading(false)
+                setError((err.response?.data as CreateUserResponse).message.content[0])
+            })
 
-            setError((err.response?.data as CreateUserResponse).message.content[0])
-        })
+        }
 
 
 

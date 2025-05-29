@@ -9,6 +9,7 @@ type EditorState = {
     setNote: (note: Note) => void;
     getNote: () => Note;
     deleteNote: () => void;
+    deleteNoteEdit: () => void;
     setNoteEdit: (note: Note | null) => void;
     getNoteEdit: () => Note | null;
 
@@ -35,6 +36,7 @@ export const useEditorStore = create<EditorState>()(
             },
             setNoteEdit: (note: Note | null) => set({ noteEdit: note }),
             getNoteEdit: () => get().noteEdit,
+            deleteNoteEdit: () => set({ noteEdit: null }),
         }),
         {
             name: 'editor-storage',

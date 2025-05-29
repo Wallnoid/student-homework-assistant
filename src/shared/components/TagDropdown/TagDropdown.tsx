@@ -13,30 +13,38 @@ import { useFormTags } from '@/shared/hooks/useFormTags.hooks';
 
 
 export type TagDropdownProps = {
-	// types...
+	selectedIdTags: number[]
+	setSelectedIdTags: (tags: number[]) => void
+	handleAutoSubmit: () => void
 }
 
-const TagDropdown: React.FC<TagDropdownProps> = ({ }) => {
+const TagDropdown: React.FC<TagDropdownProps> = ({ selectedIdTags, setSelectedIdTags, handleAutoSubmit }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const [selectedTags, setSelectedTags] = useState<NoteTag[]>([]);
+	const { tags, isLoading, error, refresh, setRefresh, tagsSelected, setTagsSelected } = useTags(selectedIdTags, handleAutoSubmit);
 
-	const { tags, isLoading, error, refresh, setRefresh } = useTags();
 
 	const { name, color, showTagForm, handleSubmit, handleShowTagForm, handleColorChange, handleNameChange, isLoading: isLoadingForm, fillForm, isEditing, handleSetShowTagForm, clearForm, handleDeleteTag } = useFormTags({ refresh: () => setRefresh(true) });
 
 
 	const handleTagClick = (tag: NoteTag) => {
-		if (selectedTags.some((t) => t.id === tag.id)) {
-			setSelectedTags(selectedTags.filter((t) => t.id !== tag.id));
+		if (tagsSelected?.some((t) => t.id === tag.id)) {
+			setTagsSelected(tagsSelected.filter((t) => t.id !== tag.id));
+			setSelectedIdTags(selectedIdTags.filter((id) => id !== tag.id));
 		} else {
-			setSelectedTags([...selectedTags, tag]);
+
+			const newTags = tagsSelected ? [...tagsSelected, tag] : [tag];
+			const newIds = [...selectedIdTags, tag.id!];
+
+			setTagsSelected(newTags);
+			setSelectedIdTags(newIds);
 		}
+		handleAutoSubmit();
 	};
 
 
 	const handleEditTag = (e: React.MouseEvent, tag: NoteTag) => {
-		console.log(tag)
+
 		e.stopPropagation()
 		fillForm(tag);
 		handleSetShowTagForm(true);
@@ -45,12 +53,7 @@ const TagDropdown: React.FC<TagDropdownProps> = ({ }) => {
 
 	return (
 
-		<Popover
-		// dismiss={{
-		// 	itemPress: false,
-		// }}
-
-		>
+		<Popover>
 			<PopoverHandler
 				onClick={() => handleSetShowTagForm(false)}
 
@@ -61,14 +64,14 @@ const TagDropdown: React.FC<TagDropdownProps> = ({ }) => {
 
 
 					{
-						selectedTags.length === 0 ? (
+						tagsSelected.length === 0 ? (
 							<span className="text-gray-500 text-sm">Selecciona las etiquetas</span>
 						) : null
 					}
 
 
 
-					{selectedTags.map((tag) => (
+					{tagsSelected.map((tag) => (
 						<div key={tag.id} style={{ backgroundColor: tag.color }} className={` font-semibold ${isDarkColor(tag.color) ? 'text-white ' : 'text-gray-700 '}  px-2 py-0.5 rounded-md text-xs`}>
 							{tag.name}
 						</div>

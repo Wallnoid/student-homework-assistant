@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Note } from "../models/note.model"
 import { useFieldArray, useForm } from "react-hook-form"
-import { createNote } from "../services/notes.service"
 import { lineToString } from "../utils/stringUtils.utils"
 import { useEditorStore } from "../store/note.store"
-import toast from "react-hot-toast"
 import { useDebounce } from "use-debounce"
 import { isEquals, isInitialNote } from "../utils/compareObjects.utils"
+import { NoteTag } from "../models/tag.model"
 
 
 
@@ -32,6 +31,7 @@ export const useFormNotes = (note?: Note) => {
     })
 
     const [title, setTitle] = useState(getValues('title') || '');
+    const [tags, setTags] = useState<number[]>([]);
     const [debouncedTitle] = useDebounce(title, 500);
 
     const { fields, append, remove, update, insert } = useFieldArray({
@@ -69,18 +69,22 @@ export const useFormNotes = (note?: Note) => {
 
         const noteLocal = getNote();
 
-
         if (note) {
+
+
+            const tagsIds = note.tags?.map((tag) => tag.id);
+
             setNoteEdit(note);
 
             const noteToCompare = {
                 title: note.title,
                 content: note.content,
-                tags: note.tagsIds
+                tagsIds: tagsIds
             }
 
             if (isInitialNote(noteLocal)) {
                 console.log('isInitialNote')
+                console.log('note', note)
                 mountValues(note);
                 return
             }
@@ -100,7 +104,7 @@ export const useFormNotes = (note?: Note) => {
         setValue('title', note.title);
         setValue('content', note.content);
         setTitle(note.title);
-
+        setTags(note.tagsIds ?? note.tags?.map((tag) => tag.id!));
         const lines = note.content.split('\n').map(line => ({
             content: line,
             type: 'input'
@@ -193,14 +197,18 @@ export const useFormNotes = (note?: Note) => {
 
         const content = lineToString(data?.lines);
 
+
+        console.log(tags)
+
         const dataToSend: Note = {
             title: data.title,
             content: content,
-            tagsIds: []
+            tagsIds: tags
         }
 
+        console.log('dataToSend', dataToSend)
         setNote(dataToSend);
-        toast.success('completo')
+        // toast.success('completo')
 
     }
 
@@ -208,6 +216,8 @@ export const useFormNotes = (note?: Note) => {
     return {
         control,
         register,
+        tags,
+        setTags,
         handleSubmit,
         fields,
         onSubmit,

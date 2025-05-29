@@ -1,8 +1,9 @@
 import { User } from "@/shared/models/user.model"
 import { useEffect, useState } from "react"
-import { getMembers } from "../services/members-service"
+import { deleteMember, getMembers } from "../services/members.service"
 import { useDebounce } from "use-debounce"
 import { useLoadUsersStore } from "../store/load-users"
+import toast from "react-hot-toast"
 
 
 
@@ -45,6 +46,22 @@ export const useUsers = () => {
         }
     }
 
+    const deleteUser = async (userId: number) => {
+        try {
+            deleteMember(userId).then(() => {
+                fetchUsers()
+            }).catch((error) => {
+                setError(error as string)
+                console.log(error)
+                toast.error("Error al eliminar el usuario")
+            })
+        } catch (error) {
+            setError(error as string)
+            console.log(error)
+        }
+    }
+
+
     useEffect(() => {
         console.log(debouncedSearch)
 
@@ -68,6 +85,6 @@ export const useUsers = () => {
 
 
 
-    return { users, isLoading, error, page, limit, total, totalPages, handlePageChange, handleLimitChange, debouncedSearch, setSearch, setIsLoading }
+    return { users, isLoading, error, page, limit, total, totalPages, handlePageChange, handleLimitChange, debouncedSearch, setSearch, setIsLoading, deleteUser }
 }
 

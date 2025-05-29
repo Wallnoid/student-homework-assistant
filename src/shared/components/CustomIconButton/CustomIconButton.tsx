@@ -25,8 +25,11 @@ export type CustomIconButtonProps = {
 	//loading button
 	loading?: boolean
 
+
+
 	//function to be executed when the button is activated
-	onClick: () => void
+	onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void
+
 }
 
 const CustomIconButton: React.FC<CustomIconButtonProps> = ({ variant = 'filled', size = 'md', children, backgroundColor, onClick, roundedFull = false, disabled = false, loading = false }) => {

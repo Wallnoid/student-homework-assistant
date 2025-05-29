@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { getNotes } from "../services/notes.service"
 import { Note, NoteHeaderResponse } from "../models/note.model"
 import { useLoadNotesStore } from "../store/loadNotes.store"
+import toast from "react-hot-toast"
 
 
 
@@ -30,5 +31,20 @@ export const useNotes = () => {
     }, [loadNotes])
 
 
-    return { notes, loading, error }
+    const deleteNote = async (noteId: number) => {
+        try {
+            deleteNote(noteId).then(() => {
+                setLoadNotes(true)
+            }).catch((error) => {
+                console.log(error)
+                toast.error("Error al eliminar la nota")
+            })
+        } catch (error) {
+            console.log(error)
+            toast.error("Error al eliminar la nota")
+        }
+    }
+
+
+    return { notes, loading, error, deleteNote }
 }

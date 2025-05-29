@@ -27,7 +27,7 @@ import {
 	ShieldCheckIcon,
 	PlusIcon,
 } from "@heroicons/react/24/solid";
-import { ChevronDownIcon, Cog8ToothIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, Cog8ToothIcon, ExclamationTriangleIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { getNote, getUser } from '@/shared/utils/localStorage.utils';
@@ -36,6 +36,7 @@ import { useNotes } from '@/shared/hooks/useNotes.hook';
 import { Note } from '@/shared/models/note.model';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { useEditorStore } from '@/shared/store/note.store';
+import { CustomIconButton } from '../CustomIconButton';
 
 export type SidebarProps = {
 	// types...
@@ -60,7 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 
 	const router = useRouter();
 
-	const { notes, loading, error } = useNotes()
+	const { notes, loading, error, deleteNote } = useNotes()
 
 	const newNote = useEditorStore((state) => state.note);
 
@@ -94,8 +95,9 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 			</div>
 			<List >
 
-				<Link href={"/"}>
-					<ListItem>
+				<Link href={"/"}
+				>
+					<ListItem className={`${isActive('/') ? 'text-primary hover:text-primary active:text-primary' : ''}`}>
 						<ListItemPrefix>
 							<HomeIcon className="h-5 w-5" />
 						</ListItemPrefix>
@@ -109,7 +111,8 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 
 				>
 
-					<ListItem>
+					<ListItem
+					>
 						<ListItemPrefix>
 							<PlusIcon className="h-5 w-5" />
 						</ListItemPrefix>
@@ -144,7 +147,9 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 									<Link
 										key={newNote.id}
 										href={`/editor/new`}>
-										<ListItem >
+										<ListItem
+											className={`${isActive('/editor/new') ? 'text-primary hover:text-primary active:text-primary' : ''}`}
+										>
 											<ListItemPrefix>
 												<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
 											</ListItemPrefix>
@@ -173,11 +178,20 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 												<Link
 													key={id}
 													href={`/editor/${id}`}>
-													<ListItem >
+
+													<ListItem
+														className={`${isActive(`/editor/${id}`) ? 'text-primary hover:text-primary active:text-primary' : ''} group`}
+													>
 														<ListItemPrefix>
 															<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
 														</ListItemPrefix>
 														{truncateText(title, 20)}
+														<ListItemSuffix className='group-hover:block hidden'>
+															<CustomIconButton size='sm' variant='text' backgroundColor='red' children={<TrashIcon className="h-4 w-4" />} onClick={(e) => {
+																e?.preventDefault()
+																deleteNote(id!)
+															}} />
+														</ListItemSuffix>
 													</ListItem>
 												</Link>
 											)
@@ -225,15 +239,18 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						</div>
 					</MenuHandler>
 					<MenuList>
-						<MenuItem className="flex items-center gap-2" onClick={() => {
-							router.push('/admin/students');
-						}}>
-							<ShieldCheckIcon className="size-5" />
+						{user?.role === 'ADMIN' || user?.role === 'SUPER' && (
+							<MenuItem className="flex items-center gap-2" onClick={() => {
+								router.push('/admin/students');
+							}}>
+								<ShieldCheckIcon className="size-5" />
 
-							<Typography variant="small" className="font-medium">
-								Administración
-							</Typography>
-						</MenuItem>
+
+								<Typography variant="small" className="font-medium">
+									Administración
+								</Typography>
+							</MenuItem>
+						)}
 						<MenuItem className="flex items-center gap-2">
 
 							<Cog6ToothIcon className="size-5    " />

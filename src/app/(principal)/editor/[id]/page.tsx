@@ -21,7 +21,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
     const { note, isLoading, error } = useNoteById(id)
 
-    const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput } = useFormNotes(note ?? undefined)
+    const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, tags, setTags } = useFormNotes(note ?? undefined)
 
 
     if (isLoading) {
@@ -37,10 +37,10 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
         <section className=" w-full h-full p-28 relative ">
 
-            <div className="absolute top-20 left-28 flex items-center text-gray-600 gap-2">
+            {/* <div className="absolute top-20 left-28 flex items-center text-gray-600 gap-2">
                 <Spinner className="size-4" color="gray" />
                 synchronizing
-            </div>
+            </div> */}
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 <div className="flex flex-col gap-0 w-full h-fit  items-center ">
@@ -72,7 +72,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
                         </div>
 
 
-                        <TagDropdown />
+                        <TagDropdown selectedIdTags={tags} setSelectedIdTags={setTags} handleAutoSubmit={handleSubmit(onSubmit)} />
 
 
                     </div>

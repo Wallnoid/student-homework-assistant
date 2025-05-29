@@ -14,6 +14,7 @@ export default function useBlockNavigation(message: string, shouldBlock: boolean
     const note = useEditorStore((state) => state.note);
     const editNote = useEditorStore((state) => state.noteEdit);
     const deleteNote = useEditorStore((state) => state.deleteNote);
+    const deleteNoteEdit = useEditorStore((state) => state.deleteNoteEdit);
     const setLoadNotes = useLoadNotesStore((state: any) => state.setLoad)
     const isFirstRun = useRef(true);
 
@@ -50,21 +51,19 @@ export default function useBlockNavigation(message: string, shouldBlock: boolean
 
 
                 if (editNote && !isEquals(editNote, note)) {
-                    console.log('editNote')
-                    console.log(editNote)
+
                     note.id = editNote.id
 
                     updateNote(note).then((response) => {
 
-                        toast.success('actualizado correctamente');
+                        // toast.success('actualizado correctamente');
                         deleteNote();
+                        deleteNoteEdit();
                         setLoadNotes(true)
 
                         router.push(anchor.getAttribute('href')!);
 
                     }).catch((error) => {
-                        console.log(`/editor/${editNote.id}`)
-                        router.push(`/editor/${editNote.id}`)
                         console.error('Error al actualizar la nota:', error);
                         toast.error('Ocurrió un error al actualizar la nota');
                     })
@@ -73,8 +72,9 @@ export default function useBlockNavigation(message: string, shouldBlock: boolean
                 } else {
                     createNote(note).then((response) => {
 
-                        toast.success('Guardado correctamente');
+                        // toast.success('Guardado correctamente');
                         deleteNote();
+                        deleteNoteEdit();
                         setLoadNotes(true)
 
 

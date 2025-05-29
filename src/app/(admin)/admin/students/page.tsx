@@ -22,9 +22,10 @@ import { CustomIconTextButton } from '@/shared/components/CustomIconTextButton';
 import { CustomButton } from '@/shared/components/CustomButton';
 import { useRouter } from 'next/navigation';
 import { useUsers } from '@/features/admin/hooks/useUsers';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { StudentModal } from '@/features/admin/components/StudentModal';
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
+import { getUser } from '@/shared/utils/localStorage.utils';
 
 
 const TABS = [
@@ -47,8 +48,19 @@ const TABLE_HEAD = ["Member", "Role", "Status", "Created At", "Actions"];
 const Page: NextPage = () => {
     const router = useRouter()
 
-    const { users, isLoading, error, page, totalPages, setSearch } = useUsers()
+    const { users, isLoading, error, page, totalPages, setSearch, deleteUser } = useUsers()
 
+
+
+    useEffect(() => {
+        const user = getUser()
+        if (user) {
+            if (user.role !== 'ADMIN' && user.role !== 'SUPER') {
+                // router.push('/')
+            }
+        }
+
+    }, [])
 
 
 
@@ -131,14 +143,14 @@ const Page: NextPage = () => {
                                 ) : (
 
                                     users.map(
-                                        ({ name, lastName, email, role, createdAt }, index) => {
+                                        (user, index) => {
                                             const isLast = index === users.length - 1;
                                             const classes = isLast
                                                 ? "p-4"
                                                 : "p-4 border-b border-blue-gray-50";
 
                                             return (
-                                                <tr key={name}>
+                                                <tr key={user.id}>
                                                     <td className={classes}>
                                                         <div className="flex items-center gap-3">
 
@@ -148,14 +160,14 @@ const Page: NextPage = () => {
                                                                     color="blue-gray"
                                                                     className="font-normal"
                                                                 >
-                                                                    {name} {lastName}
+                                                                    {user.name} {user.lastName}
                                                                 </Typography>
                                                                 <Typography
                                                                     variant="small"
                                                                     color="blue-gray"
                                                                     className="font-normal opacity-70"
                                                                 >
-                                                                    {email}
+                                                                    {user.email}
                                                                 </Typography>
                                                             </div>
                                                         </div>
@@ -167,7 +179,7 @@ const Page: NextPage = () => {
                                                                 color="blue-gray"
                                                                 className="font-normal"
                                                             >
-                                                                {role}
+                                                                {user.role}
                                                             </Typography>
 
                                                         </div>
@@ -188,21 +200,19 @@ const Page: NextPage = () => {
                                                             color="blue-gray"
                                                             className="font-normal"
                                                         >
-                                                            {createdAt}
+                                                            {user.createdAt}
                                                         </Typography>
                                                     </td>
                                                     <td className={classes}>
                                                         <Tooltip content="Edit User">
 
-                                                            <CustomIconButton size='sm' variant='text' children={<PencilIcon className="h-4 w-4" />} onClick={() => {
-                                                                console.log('edit')
-                                                            }} />
+                                                            <StudentModal student={user} />
                                                         </Tooltip>
 
                                                         <Tooltip content="Delete User">
 
                                                             <CustomIconButton size='sm' variant='text' backgroundColor='red' children={<TrashIcon className="h-4 w-4" />} onClick={() => {
-                                                                console.log('edit')
+                                                                deleteUser(user.id!)
                                                             }} />
                                                         </Tooltip>
 

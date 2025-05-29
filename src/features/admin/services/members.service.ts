@@ -18,5 +18,20 @@ export const createMembers = async (user: User): Promise<CreateUserResponse> => 
 }
 
 
+export const updateMember = async (user: User): Promise<CreateUserResponse> => {
+
+    const memberId = user.id
+
+    delete user.id
+
+    const response = await axios.patch(`${API_URL}/users/${memberId}`, user)
+    return response.data
+}
+
+
+export const deleteMember = async (memberId: number): Promise<void> => {
+    const response = await axios.delete(`${API_URL}/users/${memberId}`)
+    return response.data
+}
 
 
