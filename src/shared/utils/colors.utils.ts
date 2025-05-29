@@ -1,5 +1,10 @@
 
-export function isDarkColor(color: string): boolean {
+export function isDarkColor(color: string | undefined | null): boolean {
+
+
+    if (!color) {
+        return false;
+    }
 
     const rgb = color.replace('#', '').match(/.{1,2}/g);
     if (!rgb) {

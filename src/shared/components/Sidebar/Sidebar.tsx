@@ -239,7 +239,7 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						</div>
 					</MenuHandler>
 					<MenuList>
-						{user?.role === 'ADMIN' || user?.role === 'SUPER' && (
+						{(user?.role === 'ADMIN' || user?.role === 'SUPER') && (
 							<MenuItem className="flex items-center gap-2" onClick={() => {
 								router.push('/admin/students');
 							}}>
