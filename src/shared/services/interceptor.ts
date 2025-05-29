@@ -27,6 +27,20 @@ interceptor.interceptors.response.use(
 
             removeToken();
         }
+        if (error.response.status === 403) {
+            window.location.href = '/login';
+            removeToken();
+        }
+        if (error.response.status === 404) {
+            window.location.href = '/login';
+            removeToken();
+        }
+
+        if (error.response.status === 500) {
+            window.location.href = '/login';
+            removeToken();
+        }
+
         return Promise.reject(error);
     }
 );
