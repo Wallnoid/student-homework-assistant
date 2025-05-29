@@ -1,5 +1,6 @@
 'use client'
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
+import { getUser } from '@/shared/utils/localStorage.utils';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { DocumentIcon, FolderIcon, MagnifyingGlassIcon, PlusCircleIcon, PlusIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import { Card, Typography } from '@material-tailwind/react';
@@ -7,6 +8,9 @@ import type { NextPage } from 'next';
 
 
 const Page: NextPage = () => {
+
+
+  const user = getUser()
 
   const textGradient = 'bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text'
 
@@ -38,7 +42,7 @@ const Page: NextPage = () => {
       {/* Principal Title */}
       <Typography
         className={`${textGradient}`}
-        variant="h2">Bienvenido William!</Typography>
+        variant="h2">Bienvenido {user?.name ? user?.name : ''}!</Typography>
 
 
       {/* Quick questions section for AI */}
