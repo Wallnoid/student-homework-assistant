@@ -1,16 +1,26 @@
 'use client'
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
+import { User } from '@/shared/models/user.model';
 import { getUser } from '@/shared/utils/localStorage.utils';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { DocumentIcon, FolderIcon, MagnifyingGlassIcon, PlusCircleIcon, PlusIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import { Card, Typography } from '@material-tailwind/react';
 import type { NextPage } from 'next';
+import { useEffect, useState } from 'react';
 
 
 const Page: NextPage = () => {
 
 
-  const user = getUser()
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const user = getUser()
+    if (user) {
+      setUser(user)
+    }
+  }, [])
+
 
   const textGradient = 'bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text'
 
