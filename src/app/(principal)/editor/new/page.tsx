@@ -3,11 +3,8 @@ import { InputForEditor } from "@/features/editor/components/InputForEditor";
 import { InputIAForEditor } from "@/features/editor/components/InputIAForEditor";
 import { TagDropdown } from "@/shared/components/TagDropdown";
 import { useFormNotes } from "@/shared/hooks/useFormNotes.hook";
-
 import { ListBulletIcon } from "@heroicons/react/24/solid";
-import { Spinner } from "@material-tailwind/react";
 import type { NextPage } from 'next';
-import { useState } from "react";
 import { Controller } from "react-hook-form";
 
 
@@ -15,10 +12,10 @@ import { Controller } from "react-hook-form";
 
 const Page: NextPage = () => {
 
-    const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, tags, setTags } = useFormNotes()
+    const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, tags, setTags, handleKeyDownIA, handleNewInput, handleDeleteIAInput } = useFormNotes()
 
     return (
-        <section className=" w-full h-full p-28 relative ">
+        <section className=" w-full h-fit p-28 relative  bg-gray-50 ">
 
             {/* <div className="absolute top-20 left-28 flex items-center text-gray-600 gap-2">
                 <Spinner className="size-4" color="gray" />
@@ -68,7 +65,7 @@ const Page: NextPage = () => {
 
                         {fields.map((input, index) => {
 
-                            if (input.type == 'input') {
+                            if (input.type == 'input' && !input.content.includes('@InputIAForEditor')) {
                                 return (
 
                                     <Controller
@@ -82,9 +79,7 @@ const Page: NextPage = () => {
                                                 key={input.id}
                                                 index={index}
                                                 countInputs={fields.length}
-
                                                 inputRef={(el) => (inputRefs.current[index] = el)}
-
                                                 onKeyDown={(e) => handleKeyDown(e, index)}
                                                 onNavigateUp={() => handleNavigateUp(index)}
                                                 onNavigateDown={() => handleNavigateDown(index)}
@@ -101,8 +96,25 @@ const Page: NextPage = () => {
 
                             return (
 
-                                <InputIAForEditor
-                                    key={index} />
+                                <Controller
+                                    key={input.id}
+                                    name={`lines.${index}.content`}
+                                    control={control}
+                                    defaultValue={input.content || ""}
+                                    render={({ field }) => (
+                                        <InputIAForEditor
+                                            {...field}
+                                            key={input.id}
+                                            content={input.content}
+                                            onKeyDown={(e) => handleKeyDownIA(e, index)}
+                                            handleNewInput={handleNewInput}
+                                            handleAutoSubmit={handleSubmit(onSubmit)}
+                                            handleDeleteIAInput={() => handleDeleteIAInput(index)}
+                                        />
+                                    )}
+                                />
+
+
                             )
                         }
                         )}

@@ -1,5 +1,6 @@
 'use client'
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
+import MarkDownConverter from '@/shared/components/MarkDownConverter/MarkDownConverter';
 import { User } from '@/shared/models/user.model';
 import { getUser } from '@/shared/utils/localStorage.utils';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
@@ -51,13 +52,18 @@ const Page: NextPage = () => {
 
       {/* Principal Title */}
       <Typography
-        className={`${textGradient}`}
+        className={`${textGradient} `}
         variant="h2">Bienvenido {user?.name ? user?.name : ''}!</Typography>
 
 
       {/* Quick questions section for AI */}
 
       <div className='flex flex-col w-full gap-5'>
+
+        <MarkDownConverter content={"Aquí te dejo algunos ejemplos de definiciones de funciones que realizan operaciones en diferentes lenguajes de programación:\n\n### 1. Lenguaje de Programación Java\n```java\npublic int suma(int a, int b) {\n    return a + b;\n}\n```\nEsta función suma dos números enteros y devuelve el resultado.\n\n### 2. Lenguaje de Programación Python\n```python\ndef multiplicar(a, b):\n    return a * b\n```\nEsta función multiplica dos números y devuelve el resultado.\n\n### 3. Lenguaje de Programación C++\n```cpp\nint restar(int a, int b) {\n    return a - b;\n}\n```\nEsta función resta dos números enteros y devuelve el resultado.\n\n### 4. Lenguaje de Programación JavaScript\n```javascript\nfunction dividir(a, b) {\n    if (b !== 0) {\n        return a / b;\n    } else {\n        return \"Error: División por cero\";\n    }\n}\n```\nEsta función divide un número por otro y devuelve el resultado, excepto si se intenta dividir por cero.\n\n### 5. Lenguaje de Programación C#\n```csharp\nint promediar(int a, int b) {\n    return (a + b) / 2;\n}\n```\nEsta función calcula el promedio de dos números enteros y devuelve el resultado.\n\nEn general, la estructura de una función en la mayoría de lenguajes de programación es similar:\n- La palabra clave para definir una función (por ejemplo, `public`, `def`, `function`, `int`).\n- El nombre de la función.\n- Los parámetros entre paréntesis.\n- El cuerpo de la función, que contiene la lógica para realizar la operación deseada.\n- La instrucción `return` para devolver el resultado de la función."} />
+
+
+
         <div className='flex flex-row w-full items-center gap-3'>
 
           <SparklesIcon className='size-7 text-primary' />

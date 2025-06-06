@@ -47,6 +47,7 @@ export const useFormNotes = (note?: Note) => {
         if (note) {
             mountValues(note);
         }
+
     }, []);
 
     useEffect(() => {
@@ -83,8 +84,6 @@ export const useFormNotes = (note?: Note) => {
             }
 
             if (isInitialNote(noteLocal)) {
-                console.log('isInitialNote')
-                console.log('note', note)
                 mountValues(note);
                 return
             }
@@ -100,23 +99,88 @@ export const useFormNotes = (note?: Note) => {
     }, [note]);
 
 
+
+
+    const handleNewInput = () => {
+        const newIndex = fields.length;
+        append({
+            content: '',
+            type: 'input'
+        });
+
+        requestAnimationFrame(() => {
+            const tryFocus = () => {
+                const input = inputRefs.current[newIndex];
+                if (input) {
+                    input.focus();
+                } else {
+                    setTimeout(tryFocus, 50);
+                }
+            };
+            tryFocus();
+        });
+    }
+
+    const handleDeleteIAInput = (index: number) => {
+        remove(index);
+    }
+
     const mountValues = (note: Note) => {
         setValue('title', note.title);
         setValue('content', note.content);
         setTitle(note.title);
         setTags(note.tagsIds ?? note.tags?.map((tag) => tag.id!));
-        const lines = note.content.split('\n').map(line => ({
-            content: line,
-            type: 'input'
-        }));
+
+        const lines: { content: string; type: 'input' | 'inputIA' }[] = [];
+        const contentLines = note.content.split('\n');
+
+        let isInIAInput = false;
+        let currentIAInput = '';
+
+        for (const line of contentLines) {
+            if (line.includes('@InputIAForEditor')) {
+                if (isInIAInput) {
+                    currentIAInput += '\n' + line;
+                    lines.push({
+                        content: currentIAInput.trim(),
+                        type: 'inputIA'
+                    });
+                    currentIAInput = '';
+                    isInIAInput = false;
+                } else {
+                    isInIAInput = true;
+                    currentIAInput = line;
+                }
+            } else if (isInIAInput) {
+                currentIAInput += '\n' + line;
+            } else {
+                if (line.trim()) {
+                    lines.push({
+                        content: line,
+                        type: 'input'
+                    });
+                }
+            }
+        }
+
+        if (currentIAInput.trim()) {
+            lines.push({
+                content: currentIAInput.trim(),
+                type: isInIAInput ? 'inputIA' : 'input'
+            });
+        }
+
+        if (lines.length === 0) {
+            lines.push({
+                content: '',
+                type: 'input'
+            });
+        }
 
         setValue('lines', lines);
-
-    }
-
+    };
 
     const handleActiveIAnote = (index: number) => {
-
         if (fields[index].type === 'input') {
             update(index, { ...fields[index], type: 'inputIA' });
         }
@@ -168,6 +232,10 @@ export const useFormNotes = (note?: Note) => {
         if (e.key === 'Backspace' && cursorPosition === 0) {
             e.preventDefault();
 
+            if (fields[index - 1]?.type === 'inputIA') {
+                return;
+            }
+
             if (index > 0 && fields[index - 1]) {
                 const prevContent = fields[index - 1].content + currentValue;
 
@@ -193,12 +261,25 @@ export const useFormNotes = (note?: Note) => {
 
     };
 
+    const handleKeyDownIA = (e: React.KeyboardEvent, index: number) => {
+        const textarea = e.target as HTMLTextAreaElement;
+        const cursorPosition = textarea.selectionStart;
+        const currentValue = textarea.value;
+
+        if (e.key === 'Backspace' && cursorPosition === 0 && currentValue.length === 0) {
+            e.preventDefault();
+            update(index, { ...fields[index], type: 'input' });
+            setValue(`lines.${index}.content`, '');
+            setTimeout(() => {
+                inputRefs.current[index]?.focus();
+            }, 0);
+        }
+    }
+
+
     const onSubmit = (data: Note) => {
 
         const content = lineToString(data?.lines);
-
-
-        console.log(tags)
 
         const dataToSend: Note = {
             title: data.title,
@@ -206,9 +287,7 @@ export const useFormNotes = (note?: Note) => {
             tagsIds: tags
         }
 
-        console.log('dataToSend', dataToSend)
         setNote(dataToSend);
-        // toast.success('completo')
 
     }
 
@@ -225,7 +304,7 @@ export const useFormNotes = (note?: Note) => {
         handleKeyDown,
         handleNavigateDown,
         handleNavigateUp,
-        handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput
+        handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, handleKeyDownIA, handleNewInput, handleDeleteIAInput
     }
 }
 

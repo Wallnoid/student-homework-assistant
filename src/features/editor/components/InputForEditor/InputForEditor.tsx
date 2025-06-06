@@ -81,16 +81,11 @@ const InputForEditor: React.FC<InputForEditorProps> = ({
 		}
 
 		if (e.key === ' ' && value.length === 0) {
+			e.preventDefault();
 			handleActiveIAnote(index);
 		}
 
-
-
 		onKeyDown(e);
-
-
-
-
 	};
 
 	return (

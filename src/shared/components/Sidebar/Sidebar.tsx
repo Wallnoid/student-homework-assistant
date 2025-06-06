@@ -180,7 +180,7 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 													href={`/editor/${id}`}>
 
 													<ListItem
-														className={`${isActive(`/editor/${id}`) ? 'text-primary hover:text-primary active:text-primary hover:py-2' : ''} group`}
+														className={`${isActive(`/editor/${id}`) ? 'text-primary hover:text-primary active:text-primary' : ''} group`}
 													>
 														<ListItemPrefix>
 															<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />

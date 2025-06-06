@@ -21,7 +21,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
     const { note, isLoading, error } = useNoteById(id)
 
-    const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, tags, setTags } = useFormNotes(note ?? undefined)
+    const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, tags, setTags, handleKeyDownIA, handleNewInput, handleDeleteIAInput } = useFormNotes(note ?? undefined)
 
 
     if (isLoading) {
@@ -35,7 +35,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
     return (
 
-        <section className=" w-full h-full p-28 relative ">
+        <section className=" w-full h-fit   p-28 relative  bg-gray-50 ">
 
             {/* <div className="absolute top-20 left-28 flex items-center text-gray-600 gap-2">
                 <Spinner className="size-4" color="gray" />
@@ -119,8 +119,23 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
                             return (
 
-                                <InputIAForEditor
-                                    key={index} />
+                                <Controller
+                                    key={input.id}
+                                    name={`lines.${index}.content`}
+                                    control={control}
+                                    defaultValue={input.content || ""}
+                                    render={({ field }) => (
+                                        <InputIAForEditor
+                                            {...field}
+                                            key={input.id}
+                                            content={input.content}
+                                            onKeyDown={(e) => handleKeyDownIA(e, index)}
+                                            handleNewInput={handleNewInput}
+                                            handleAutoSubmit={handleSubmit(onSubmit)}
+                                            handleDeleteIAInput={() => handleDeleteIAInput(index)}
+                                        />
+                                    )}
+                                />
                             )
                         }
                         )}
