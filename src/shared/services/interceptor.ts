@@ -22,16 +22,8 @@ interceptor.interceptors.request.use(
 interceptor.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response.status === 401) {
-            window.location.href = '/login';
 
-            removeToken();
-        }
         if (error.response.status === 403) {
-            window.location.href = '/login';
-            removeToken();
-        }
-        if (error.response.status === 404) {
             window.location.href = '/login';
             removeToken();
         }
