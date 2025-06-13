@@ -25,7 +25,7 @@ import { useUsers } from '@/features/admin/hooks/useUsers';
 import { useCallback, useEffect } from 'react';
 import { StudentModal } from '@/features/admin/components/StudentModal';
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
-import { getUser } from '@/shared/utils/localStorage.utils';
+import { useUserMe } from '@/shared/hooks/useUserMe.hook';
 
 
 const TABS = [
@@ -50,17 +50,18 @@ const Page: NextPage = () => {
 
     const { users, isLoading, error, page, totalPages, setSearch, deleteUser } = useUsers()
 
+    const { user } = useUserMe();
+
 
 
     useEffect(() => {
-        const user = getUser()
         if (user) {
             if (user.role !== 'ADMIN' && user.role !== 'SUPER') {
                 // router.push('/')
             }
         }
 
-    }, [])
+    }, [user])
 
 
 

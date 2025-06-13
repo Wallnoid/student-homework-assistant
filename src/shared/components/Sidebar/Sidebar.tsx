@@ -26,33 +26,52 @@ import {
 	DocumentTextIcon,
 	ShieldCheckIcon,
 	PlusIcon,
+	ChatBubbleBottomCenterIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon, Cog8ToothIcon, ExclamationTriangleIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+	ChatBubbleBottomCenterTextIcon,
+} from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { getNote, getUser } from '@/shared/utils/localStorage.utils';
 import { User } from '@/shared/models/user.model';
 import { useNotes } from '@/shared/hooks/useNotes.hook';
 import { Note } from '@/shared/models/note.model';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { useEditorStore } from '@/shared/store/note.store';
 import { CustomIconButton } from '../CustomIconButton';
+import { useUserMe } from '@/shared/hooks/useUserMe.hook';
+import { ChatSession } from '@/shared/models/session.model';
 
 export type SidebarProps = {
 	// types...
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ }) => {
-	const [open, setOpen] = useState(1);
+	const [openEditor, setOpen] = useState(1);
 
-	const [user, setUser] = useState<User | null>(null)
+	const [openChat, setOpenChat] = useState(0);
+
+	const { user, isLoading, setReload } = useUserMe();
+
+
+	// const [user, setUser] = useState<User | null>(null)
 
 	const [showNewNotenoteExists, setShowNewNote] = useState(true)
 
+	const [showNewChat, setShowNewChat] = useState(true)
+
 	const pathname = usePathname();
 
-	const handleOpen = (value: number) => {
-		setOpen(open === value ? 0 : value);
+	const handleOpenEditor = (value: number) => {
+		setOpen(openEditor === value ? 0 : value);
+
+		setOpenChat(0);
+	};
+
+	const handleOpenChat = (value: number) => {
+		setOpenChat(openChat === value ? 0 : value);
+		setOpen(0);
 	};
 
 	const isActive = (path: string) => {
@@ -61,28 +80,33 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 
 	const router = useRouter();
 
-	const { notes, loading, error, deleteNote } = useNotes()
+	const { notes, loading: loadingNotes, error, deleteNote } = useNotes()
 
 	const newNote = useEditorStore((state) => state.note);
 
+	// useEffect(() => {
+	// 	const user = getUser()
+	// 	if (user) {
+	// 		// setUser(user)
+	// 	}
 
-
-
+	// }, [])
 
 
 	useEffect(() => {
-		const user = getUser()
-		if (user) {
-			setUser(user)
+		console.log('useEffect Sidebar', pathname)
+		setShowNewNote(pathname.includes('editor/new'))
+		setShowNewChat(pathname.includes('chat/new'))
+		if (pathname.includes('editor')) {
+			setOpen(1);
+			setOpenChat(0);
 		}
-
-	}, [])
-
-
-	useEffect(() => {
-
-
-		setShowNewNote(pathname.includes('new'))
+		if (pathname.includes('chat')) {
+			setReload(true);
+			console.log('pathname includes chat')
+			setOpenChat(1);
+			setOpen(0);
+		}
 
 	}, [pathname])
 
@@ -120,17 +144,20 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 
 					</ListItem>
 				</Link>
+
+
+
 				<Accordion
-					open={open === 1}
+					open={openEditor === 1}
 					icon={
 						<ChevronDownIcon
 							strokeWidth={2.5}
-							className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+							className={`mx-auto h-4 w-4 transition-transform ${openEditor === 1 ? "rotate-180" : ""}`}
 						/>
 					}
 				>
-					<ListItem className="p-0" selected={open === 1}>
-						<AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+					<ListItem className="p-0" selected={openEditor === 1}>
+						<AccordionHeader onClick={() => handleOpenEditor(1)} className="border-b-0 p-3">
 							<ListItemPrefix>
 								<BookOpenIcon className="h-5 w-5" />
 							</ListItemPrefix>
@@ -140,7 +167,7 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						</AccordionHeader>
 					</ListItem>
 					<AccordionBody className="py-1">
-						<List className="p-0 overflow-y-auto max-h-[calc(100vh-330px)]">
+						<List className="p-0 overflow-y-auto max-h-[calc(100vh-500px)]">
 
 							{
 								showNewNotenoteExists && (
@@ -164,7 +191,7 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 								)
 							}
 
-							{loading ?
+							{loadingNotes ?
 								(
 									<div className='flex items-center w-full justify-center gap-2 text-gray-500  mt-2'><Spinner color='gray' className='size-3' /> Loading</div>
 								) :
@@ -187,10 +214,14 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 														</ListItemPrefix>
 														{truncateText(title, 20)}
 														<ListItemSuffix className='group-hover:block hidden'>
-															<CustomIconButton size='sm' variant='text' backgroundColor='red' children={<TrashIcon className="h-4 w-4" />} onClick={(e) => {
-																e?.preventDefault()
-																deleteNote(id!)
-															}} />
+
+															<TrashIcon
+																onClick={(e) => {
+																	e?.preventDefault()
+																	deleteNote(id!)
+																}}
+																className="h-4 w-4 hover:text-red-500" />
+
 														</ListItemSuffix>
 													</ListItem>
 												</Link>
@@ -211,6 +242,113 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 						</List>
 					</AccordionBody>
 				</Accordion>
+
+				<Link href={"/chat/new"}
+
+				>
+
+					<ListItem
+					>
+						<ListItemPrefix>
+							<PlusIcon className="h-5 w-5" />
+						</ListItemPrefix>
+						Crear Chat
+
+					</ListItem>
+				</Link>
+				<Accordion
+					open={openChat === 1}
+					icon={
+						<ChevronDownIcon
+							strokeWidth={2.5}
+							className={`mx-auto h-4 w-4 transition-transform ${openChat === 1 ? "rotate-180" : ""}`}
+						/>
+					}
+				>
+					<ListItem className="p-0" selected={openChat === 1}>
+						<AccordionHeader onClick={() => handleOpenChat(1)} className="border-b-0 p-3">
+							<ListItemPrefix>
+								<ChatBubbleBottomCenterTextIcon className="h-5 w-5" />
+							</ListItemPrefix>
+							<Typography color="blue-gray" className="mr-auto font-normal">
+								Chats
+							</Typography>
+						</AccordionHeader>
+					</ListItem>
+					<AccordionBody className="py-1">
+						<List className="p-0 overflow-y-auto max-h-[calc(100vh-500px)]">
+
+							{
+								showNewChat && (
+									<Link
+										href={`/chat/new`}>
+										<ListItem
+											className={`${isActive('/chat/new') ? 'text-primary hover:text-primary active:text-primary' : ''}`}
+										>
+											<ListItemPrefix>
+												<DocumentTextIcon strokeWidth={3} className="h-5 w-5 " />
+											</ListItemPrefix>
+											New Chat
+											<ListItemSuffix>
+												<Chip value="N" size="sm" variant="ghost" color="green" className="rounded-full" />
+											</ListItemSuffix>
+										</ListItem>
+									</Link>
+
+
+								)
+							}
+
+							{isLoading ?
+								(
+									<div className='flex items-center w-full justify-center gap-2 text-gray-500  mt-2'><Spinner color='gray' className='size-3' /> Loading</div>
+								) :
+								(
+									user?.sessions?.length === 0 ? (
+										<div className='flex items-center w-full justify-center gap-1 text-gray-500  mt-2'> <ExclamationTriangleIcon className='size-4' /> No documents</div>
+									) : (
+
+										user?.sessions?.toReversed()?.map(({ title, id }: ChatSession) => {
+											return (
+												<Link
+													key={id}
+													href={`/chat/${id}`}>
+
+													<ListItem
+														className={`${isActive(`/chat/${id}`) ? 'text-primary hover:text-primary active:text-primary' : ''} group`}
+													>
+														<ListItemPrefix>
+															<ChatBubbleBottomCenterIcon strokeWidth={3} className="h-5 w-5 " />
+														</ListItemPrefix>
+														{truncateText(title, 20)}
+														<ListItemSuffix className='group-hover:block hidden'>
+															<TrashIcon
+																onClick={(e) => {
+																	e?.preventDefault()
+																	// deleteNote(id!)
+																}}
+																className="h-4 w-4 hover:text-red-500" />
+														</ListItemSuffix>
+													</ListItem>
+												</Link>
+											)
+										})
+									)
+								)
+
+							}
+
+
+
+
+
+
+
+
+						</List>
+					</AccordionBody>
+				</Accordion>
+
 			</List>
 
 			<div className="absolute bottom-0 left-0 w-full p-4 bg-white ">

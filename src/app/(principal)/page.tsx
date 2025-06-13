@@ -1,8 +1,6 @@
 'use client'
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
-import MarkDownConverter from '@/shared/components/MarkDownConverter/MarkDownConverter';
-import { User } from '@/shared/models/user.model';
-import { getUser } from '@/shared/utils/localStorage.utils';
+import { useUserMe } from '@/shared/hooks/useUserMe.hook';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { DocumentIcon, FolderIcon, MagnifyingGlassIcon, PlusCircleIcon, PlusIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import { Card, Typography } from '@material-tailwind/react';
@@ -13,14 +11,14 @@ import { useEffect, useState } from 'react';
 const Page: NextPage = () => {
 
 
-  const [user, setUser] = useState<User | null>(null)
+  const { user } = useUserMe();
 
-  useEffect(() => {
-    const user = getUser()
-    if (user) {
-      setUser(user)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const user = getUser()
+  //   if (user) {
+  //     setUser(user)
+  //   }
+  // }, [])
 
 
   const textGradient = 'bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text'

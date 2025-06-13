@@ -2,6 +2,7 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
+import "../animation.css";
 import { Sidebar } from "../../shared/components/Sidebar";
 import { Toaster } from "react-hot-toast";
 import useBlockNavigation from "@/shared/hooks/usePreventNav.hook";
