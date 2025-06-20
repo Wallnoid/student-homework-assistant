@@ -1,5 +1,6 @@
 'use client'
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
+import { SpeechComponent } from '@/shared/components/SpeechComponent';
 import { useUserMe } from '@/shared/hooks/useUserMe.hook';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
 import { DocumentIcon, FolderIcon, MagnifyingGlassIcon, PlusCircleIcon, PlusIcon, SparklesIcon } from '@heroicons/react/24/solid';
@@ -52,7 +53,6 @@ const Page: NextPage = () => {
       <Typography
         className={`${textGradient} `}
         variant="h2">Bienvenido {user?.name ? user?.name : ''}!</Typography>
-
 
       {/* Quick questions section for AI */}
 

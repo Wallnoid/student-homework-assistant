@@ -1,10 +1,13 @@
 "use client";
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
 import MarkDownConverter from '@/shared/components/MarkDownConverter/MarkDownConverter';
+import { useSpeechToText } from '@/shared/hooks/useSpeechToText.hook';
 import { simplePrompt } from '@/shared/services/simplePrompt.service';
 import { PaperAirplaneIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import { MicrophoneIcon, SparklesIcon } from '@heroicons/react/24/solid';
+import { MicrophoneIcon, SparklesIcon, StopIcon } from '@heroicons/react/24/solid';
+import { use } from 'chai';
 import React, { useEffect, useRef, useState } from 'react';
+import { start } from 'repl';
 
 export type InputIAForEditorProps = {
 	onKeyDown: (e: React.KeyboardEvent) => void;
@@ -26,6 +29,20 @@ const InputIAForEditor: React.FC<InputIAForEditorProps> = ({ onKeyDown, onChange
 	const [animated, setAnimated] = useState<boolean>(false);
 
 
+	const { transcript, listening, resetTranscript, startListening, browserSupportsSpeechRecognition, stopListening } = useSpeechToText();
+
+
+	const startSpeechToText = () => {
+		resetTranscript();
+		startListening!();
+
+	}
+
+	useEffect(() => {
+		if (transcript) {
+			setValue(transcript);
+		}
+	}, [transcript]);
 
 	useEffect(() => {
 		if (inputRef.current) {
@@ -92,13 +109,20 @@ const InputIAForEditor: React.FC<InputIAForEditorProps> = ({ onKeyDown, onChange
 				</div>
 
 				{
-					value.length < 1 ? (
+					value.length < 1 || listening ? (
 						<CustomIconButton
-							onClick={() => { }}
+							onClick={startSpeechToText}
 							size='sm'
 
 						>
-							<MicrophoneIcon className='size-5' />
+
+							{listening ? (
+								<StopIcon className='size-5 ' onClick={() => {
+									stopListening!();
+								}} />
+							) : (
+								<MicrophoneIcon className='size-5 ' />
+							)}
 						</CustomIconButton>
 					) : (
 						<CustomIconButton

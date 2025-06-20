@@ -1,0 +1,1 @@
+export { default as SpeechComponent } from './SpeechComponent';

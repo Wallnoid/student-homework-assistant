@@ -1,11 +1,13 @@
 'use client';
 import { CustomIconButton } from "@/shared/components/CustomIconButton";
+import { InputBox } from "@/shared/components/InputBox";
 import { MarkDownConverter } from "@/shared/components/MarkDownConverter";
 import { useSession } from "@/shared/hooks/useSession.hook";
+import { useSpeechToText } from "@/shared/hooks/useSpeechToText.hook";
 import { useWebSocketChat } from "@/shared/hooks/useWebSocketChat.hook";
-import { MicrophoneIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { MicrophoneIcon, PaperAirplaneIcon, StopIcon } from "@heroicons/react/24/solid";
 import { Alert, Spinner } from "@material-tailwind/react";
-import { use, useEffect, useRef } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 
 type Params = {
@@ -17,11 +19,15 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
     const { id } = use(params)
 
+    const bottomRef = useRef<HTMLDivElement>(null);
+
+    const [onTypeAnimated, setOnTypeAnimated] = useState(false);
 
     const { input, log, message, socket, setLog, handleSendMessage, setMessage, setInput, animation, isLoading, error: errorW, setError } = useWebSocketChat(id);
 
     const { session, isLoading: isLoadingSession, error } = useSession(id);
 
+    const { transcript, listening, resetTranscript, startListening, browserSupportsSpeechRecognition, stopListening } = useSpeechToText();
 
 
     useEffect(() => {
@@ -37,6 +43,23 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
 
     }, [session]);
+
+
+    useEffect(() => {
+
+        if (transcript) {
+            setInput(transcript);
+        }
+
+    }, [transcript]);
+
+    useEffect(() => {
+
+        setOnTypeAnimated(true);
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [log]);
 
 
 
@@ -76,16 +99,15 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
                 {
                     isLoading &&
-                    <div className='w-full flex items-start justify-start' >
+                    <div ref={bottomRef} className='w-full flex items-start justify-start mb-48' >
                         <div className='flex items-center w-fit h-fit justify-center gap-2 p-2 bg-gray-50 rounded-lg ' >
-
                             <div className='loader'></div>
-
-
                         </div>
 
                     </div>
                 }
+
+                {/* <div tabIndex={-1} className={onTypeAnimated ? "mt-20" : ""} /> */}
 
 
                 <Alert open={errorW !== null} onClose={() => setError(null)} color="red">
@@ -98,25 +120,28 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
             <div className="w-[85%]  p-6 bg-white rounded-lg shadow-lg absolute bottom-2 left-1/2 transform -translate-x-1/2 mb-4">
 
-                <textarea
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    className="text-base overflow-hidden h-fit text-gray-800 font-normal w-full border-none outline-none ring-0 focus:ring-0 focus:outline-none resize-none "
-                    placeholder="Ingresa tu mensaje..."
-                    rows={1}
-                    onInputCapture={(e) => {
-                        const target = e.target as HTMLTextAreaElement;
-                        target.style.height = 'auto';
-                        target.style.height = `${target.scrollHeight}px`;
-                    }}
-                />
+
+                <InputBox input={input} setInput={setInput} />
 
                 <div className='flex items-center justify-end mt-4 gap-5'>
 
+                    <CustomIconButton size='md' roundedFull variant='text' disabled={isLoading || (input.length > 1 && !listening)}
+                        children={
 
-                    <CustomIconButton size='md' variant='text' children={<MicrophoneIcon className="size-5" />} onClick={() => {
-                    }} />
-                    <CustomIconButton size='md' loading={isLoading} disabled={isLoading} roundedFull variant='filled' children={<PaperAirplaneIcon className="size-5" />} onClick={() => {
+                            listening ? <StopIcon className="size-5 " /> : (
+                                <MicrophoneIcon className="size-5" />
+                            )
+
+                        } onClick={() => {
+                            if (listening) {
+                                stopListening!();
+                            } else {
+                                resetTranscript();
+                                startListening!();
+                            }
+
+                        }} />
+                    <CustomIconButton size='md' loading={isLoading} disabled={isLoading || listening} roundedFull variant='filled' children={<PaperAirplaneIcon className="size-5" />} onClick={() => {
 
                         handleSendMessage();
                     }} />

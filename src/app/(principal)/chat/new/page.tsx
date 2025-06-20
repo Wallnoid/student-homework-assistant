@@ -6,16 +6,31 @@ import { getToken } from '@/shared/utils/localStorage.utils';
 import { MarkDownConverter } from '@/shared/components/MarkDownConverter';
 import { CustomButton } from '@/shared/components/CustomButton';
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
-import { MicrophoneIcon, PaperAirplaneIcon, ShieldExclamationIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { MicrophoneIcon, PaperAirplaneIcon, ShieldExclamationIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { useSession } from '@/shared/hooks/useSession.hook';
 import { set } from 'react-hook-form';
 import { MessageSession } from '@/shared/models/session.model';
 import { useWebSocketChat } from '@/shared/hooks/useWebSocketChat.hook';
 import { Alert } from '@material-tailwind/react';
+import { useSpeechToText } from '@/shared/hooks/useSpeechToText.hook';
+import { StopIcon } from '@heroicons/react/24/solid';
 
 const Page = () => {
 
     const { input, log, message, socket, setLog, handleSendMessage, setMessage, setInput, isLoading, error, setError } = useWebSocketChat();
+
+    const { transcript, listening, resetTranscript, startListening, browserSupportsSpeechRecognition, stopListening } = useSpeechToText();
+
+
+    useEffect(() => {
+
+        if (transcript) {
+            setInput(transcript);
+        }
+
+    }, [transcript]);
+
+
 
 
     return (
@@ -35,7 +50,7 @@ const Page = () => {
                     }
 
 
-                    return <MarkDownConverter key={index} content={entry.content} />
+                    return <MarkDownConverter key={index} content={entry.content} speed={5} />
 
                 })}
 
@@ -81,9 +96,23 @@ const Page = () => {
                 <div className='flex items-center justify-end mt-4 gap-5'>
 
 
-                    <CustomIconButton size='md' roundedFull variant='text' children={<MicrophoneIcon className="size-5" />} onClick={() => {
-                    }} />
-                    <CustomIconButton size='md' loading={isLoading} disabled={isLoading} roundedFull variant='filled' children={<PaperAirplaneIcon className="size-5" />} onClick={() => {
+                    <CustomIconButton size='md' roundedFull variant='text' disabled={isLoading || (input.length > 1 && !listening)}
+                        children={
+
+                            listening ? <StopIcon className="size-5 " /> : (
+                                <MicrophoneIcon className="size-5" />
+                            )
+
+                        } onClick={() => {
+                            if (listening) {
+                                stopListening!();
+                            } else {
+                                resetTranscript();
+                                startListening!();
+                            }
+
+                        }} />
+                    <CustomIconButton size='md' loading={isLoading} disabled={isLoading || listening} roundedFull variant='filled' children={<PaperAirplaneIcon className="size-5" />} onClick={() => {
 
                         handleSendMessage();
                     }} />
