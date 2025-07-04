@@ -5,7 +5,7 @@ import { CustomIconButton } from '@/shared/components/CustomIconButton';
 import { CustomIconTextButton } from '@/shared/components/CustomIconTextButton';
 import { PencilIcon, UserPlusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { Dialog, DialogBody, DialogFooter, DialogHeader, Input, Select, Typography, Option, Alert } from '@material-tailwind/react';
-import { useFormUser } from '../../hooks/useFormUser';
+import { useFormUser } from '../../hooks/useFormUser.hook';
 import { Role, User } from '@/shared/models/user.model';
 import { ShieldExclamationIcon } from '@heroicons/react/24/solid';
 import { truncateText } from '@/shared/utils/stringUtils.utils';
@@ -14,17 +14,26 @@ import { useLoadUsersStore } from '../../store/load-users';
 
 export type StudentModalProps = {
 
-	student?: User
+	student?: User // This prop is optional and can be used to edit an existing student
 }
 
+// This component is a modal that allows the user to create or edit a student
 const StudentModal: React.FC<StudentModalProps> = ({ student }) => {
 
+	// State to manage the open/close state of the modal
+	// It starts as false, meaning the modal is closed by default
 	const [open, setOpen] = useState(false);
 
+	// This method toggles the open state of the modal
+	// When the user clicks the button to open or close the modal, this method is called
 	const handleOpen = () => setOpen(!open);
 
+	// This store hook is used to manage the loading state of users
+	// It allows the component to trigger a reload of users when a student is created or edited
 	const setLoadUsers = useLoadUsersStore((state: any) => state.setLoad)
 
+	// This hook is used to manage the form state for creating or editing a student
+	// It provides methods for registering form fields, handling form submission, and managing errors
 	const { register, handleSubmit, errors, onSubmit, setValue, loading, error, reset } = useFormUser({
 		onSuccess: () => {
 			handleOpen()
@@ -116,7 +125,7 @@ const StudentModal: React.FC<StudentModalProps> = ({ student }) => {
 							{errors.lastName && <div className='text-red-500 text-[12px]'>{errors.lastName.message}</div>}
 						</div>
 					</div>
-					<Select value={Role.USER} label="Rol" onChange={(value) => {
+					<Select value={student?.role || Role.USER} label="Rol" onChange={(value) => {
 						setValue("role", value as Role)
 					}} >
 						<Option value={Role.ADMIN}>ADMIN</Option>

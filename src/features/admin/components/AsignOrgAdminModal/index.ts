@@ -1,0 +1,1 @@
+export { default as AsignOrgAdminModal } from './AsignOrgAdminModal';

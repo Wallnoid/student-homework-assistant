@@ -2,6 +2,7 @@
 
 @config "../../tailwind.config.ts";
 @plugin "@tailwindcss/typography";
+@import "tailwindcss-animated";
 
 
 

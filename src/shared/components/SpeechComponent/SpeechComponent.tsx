@@ -7,7 +7,7 @@ const SpeechComponent: React.FC = () => {
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
-		// Esto garantiza que se monta SOLO en cliente
+
 		setIsClient(true);
 	}, []);
 
@@ -20,7 +20,7 @@ const SpeechComponent: React.FC = () => {
 
 	if (!isClient) return null; // o un loading spinner si quieres
 
-	if (!browserSupportsSpeechRecognition) {
+	if (browserSupportsSpeechRecognition) {
 		return <span>Browser doesn't support speech recognition.</span>;
 	}
 

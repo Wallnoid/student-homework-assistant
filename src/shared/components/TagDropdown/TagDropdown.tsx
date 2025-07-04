@@ -13,11 +13,23 @@ import { useFormTags } from '@/shared/hooks/useFormTags.hooks';
 
 
 export type TagDropdownProps = {
-	selectedIdTags: number[]
-	setSelectedIdTags: (tags: number[]) => void
-	handleAutoSubmit: () => void
+	selectedIdTags: number[] // Array of selected tag IDs
+	// This prop is used to keep track of the currently selected tags in the dropdown
+	setSelectedIdTags: (tags: number[]) => void // Function to update the selected tag IDs
+	// This function will be called whenever the selected tags change
+	handleAutoSubmit: () => void // Function to handle auto submission of the selected tags
+	// This function will be called whenever the selected tags change
+	// It allows the parent component to perform actions based on the selected tags, such as saving them to a database or updating the UI
 }
 
+
+/** * This component is a dropdown for selecting and managing tags.
+ * It allows users to add, edit, and delete tags, as well as select existing tags.
+ * It uses a popover to display the list of tags and a form for adding/editing tags.
+ * The component also handles the selection of tags and updates the parent component with the selected tag IDs.
+ * @param {TagDropdownProps} props - The properties for the TagDropdown component
+ * @returns {JSX.Element} - The rendered TagDropdown component
+ */
 const TagDropdown: React.FC<TagDropdownProps> = ({ selectedIdTags, setSelectedIdTags, handleAutoSubmit }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -59,7 +71,7 @@ const TagDropdown: React.FC<TagDropdownProps> = ({ selectedIdTags, setSelectedId
 
 			>
 				<div
-					className={`flex flex-row gap-2 h-full rounded-lg   hover:bg-gray-200  py-1 px-2 items-center col-span-5 cursor-pointer ${isOpen ? 'bg-gray-200' : ''}`}
+					className={`flex flex-wrap gap-2 h-full rounded-lg   hover:bg-gray-200  py-1 px-2 items-center col-span-5 cursor-pointer ${isOpen ? 'bg-gray-200' : ''}`}
 				>
 
 

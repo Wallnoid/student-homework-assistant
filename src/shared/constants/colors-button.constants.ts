@@ -1,4 +1,6 @@
 
+// src/shared/constants/colors-button.constants.ts
+// This file contains constants for color options used in buttons and other UI elements.
 export const colorOptions = [
     "none",
     "white",

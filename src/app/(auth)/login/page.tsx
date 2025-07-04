@@ -5,8 +5,9 @@ import { CustomIconButton } from '@/shared/components/CustomIconButton';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Card, Checkbox, IconButton, Input, Typography } from '@material-tailwind/react';
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormLogin } from '@/features/login/hooks/useFormLogin.hook';
+import { removeAllData } from '@/shared/utils/localStorage.utils';
 
 const Page: NextPage = () => {
 
@@ -15,6 +16,12 @@ const Page: NextPage = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const { register, handleSubmit, formState: { errors }, loading, error, onSubmit } = useFormLogin()
+
+
+    useEffect(() => {
+
+        removeAllData();
+    }, []);
 
 
     const handleShowPassword = () => {

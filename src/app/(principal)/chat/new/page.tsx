@@ -1,15 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
-import { getToken } from '@/shared/utils/localStorage.utils';
 import { MarkDownConverter } from '@/shared/components/MarkDownConverter';
-import { CustomButton } from '@/shared/components/CustomButton';
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
-import { MicrophoneIcon, PaperAirplaneIcon, ShieldExclamationIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { useSession } from '@/shared/hooks/useSession.hook';
-import { set } from 'react-hook-form';
-import { MessageSession } from '@/shared/models/session.model';
+import { MicrophoneIcon, PaperAirplaneIcon, } from '@heroicons/react/24/solid';
+
 import { useWebSocketChat } from '@/shared/hooks/useWebSocketChat.hook';
 import { Alert } from '@material-tailwind/react';
 import { useSpeechToText } from '@/shared/hooks/useSpeechToText.hook';
@@ -20,6 +15,18 @@ const Page = () => {
     const { input, log, message, socket, setLog, handleSendMessage, setMessage, setInput, isLoading, error, setError } = useWebSocketChat();
 
     const { transcript, listening, resetTranscript, startListening, browserSupportsSpeechRecognition, stopListening } = useSpeechToText();
+
+    const [canUseSpeech, setcanUseSpeech] = useState(false);
+
+    useEffect(() => {
+        if (browserSupportsSpeechRecognition) {
+            setcanUseSpeech(true);
+        } else {
+            setcanUseSpeech(false);
+            console.warn("Browser doesn't support speech recognition.");
+        }
+    }, []);
+
 
 
     useEffect(() => {
@@ -96,7 +103,7 @@ const Page = () => {
                 <div className='flex items-center justify-end mt-4 gap-5'>
 
 
-                    <CustomIconButton size='md' roundedFull variant='text' disabled={isLoading || (input.length > 1 && !listening)}
+                    <CustomIconButton size='md' roundedFull variant='text' disabled={!canUseSpeech || isLoading || (input.length > 1 && !listening)}
                         children={
 
                             listening ? <StopIcon className="size-5 " /> : (

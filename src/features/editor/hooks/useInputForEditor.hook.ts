@@ -7,7 +7,17 @@ type EditorLine = {
 }
 
 
-export const useInputForEditor = () => {
+/**
+ * Custom hook to manage input lines for an editor.
+ * It allows adding, removing, and handling key events for input lines.
+ * 
+ * @returns {Object} - Contains inputs, setInputs, inputRefs, and handleKeyDown function.
+ * * @property {EditorLine[]} inputs - Array of input lines.
+ * * @property {Function} setInputs - Function to update the input lines.
+ * * @property {React.RefObject[]} inputRefs - Array of refs for each input line.
+ * * @property {Function} handleKeyDown - Function to handle key down events for input lines.
+ */
+export const useInputForEditor = (): object => {
 
     const [inputs, setInputs] = useState<EditorLine[]>([{ id: 1, value: '', type: 'input' }]);
     const inputRefs = useRef<(HTMLTextAreaElement | null)[]>([]);

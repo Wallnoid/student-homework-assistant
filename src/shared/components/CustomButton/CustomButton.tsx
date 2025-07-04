@@ -35,10 +35,15 @@ export type CustomButtonProps = {
 
 }
 
+/*This component is a custom button that can be used throughout the application.
+It allows for different styles, sizes, and functionalities based on the props passed to it.
+It uses the Button component from Material Tailwind and applies custom styles based on the variant and other props.
+*/
 const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 'md', label, backgroundColor, onClick, roundedFull = false, fullWidth = false, loading = false, disabled = false }) => {
 
 
-
+	// Define the style options for the button based on the variant
+	// This object maps the variant to the corresponding Tailwind CSS classes
 	const styleOptions = {
 		filled: 'bg-gradient-to-br from-primary to-secondary',
 		outlined: 'bg-transparent border border-primary bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text',
@@ -47,6 +52,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({ variant = 'filled', size = 
 	}
 
 
+	// If a background color is provided and it is not 'none', use the Button component with the specified color
+	// This allows for a solid color button with the specified background color
 	if (backgroundColor && backgroundColor != 'none') {
 		return (
 			<Button

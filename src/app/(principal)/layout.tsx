@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const hasUnsavedChanges = true; // o tu lógica para saber si bloquear
+  const hasUnsavedChanges = true;
   useBlockNavigation('Tienes cambios sin guardar, ¿quieres salir?', hasUnsavedChanges);
   return (
     <html lang="en">
@@ -32,6 +32,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} overflow-hidden bg-gray-50 antialiased flex flex-row items-center  h-screen  min-h-screen font-[family-name:var(--font-geist-sans)]`}
       >
         <Toaster />
+
+
         <Sidebar />
 
         <div className="w-full h-screen  overflow-auto ">

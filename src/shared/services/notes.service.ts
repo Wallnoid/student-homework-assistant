@@ -28,7 +28,7 @@ export const updateNote = async (note: Note) => {
     return response.data
 }
 
-export const deleteNote = async (id: number) => {
+export const deleteNoteS = async (id: number) => {
     const response = await interceptor.delete(`${API_URL}/notes/${id}`)
     return response.data
 }

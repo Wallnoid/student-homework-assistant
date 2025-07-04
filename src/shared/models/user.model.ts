@@ -1,3 +1,4 @@
+import { Organization } from "./organization.model"
 import { ChatSession } from "./session.model"
 
 
@@ -7,12 +8,6 @@ export enum Role {
     SUPER = 'SUPER'
 }
 
-
-export interface Organization {
-    id: number
-    name: string
-    domain: string
-}
 
 
 export interface User {
@@ -27,6 +22,11 @@ export interface User {
     createdAt?: string
     sessions?: ChatSession[]
     organization?: Organization
+}
+
+export interface AssignAdmin {
+    organizationId: number
+    id: number
 }
 
 

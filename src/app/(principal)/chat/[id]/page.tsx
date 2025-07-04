@@ -29,9 +29,21 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
     const { transcript, listening, resetTranscript, startListening, browserSupportsSpeechRecognition, stopListening } = useSpeechToText();
 
+    const [canUseSpeech, setcanUseSpeech] = useState(false);
+
+    useEffect(() => {
+        if (browserSupportsSpeechRecognition) {
+            setcanUseSpeech(true);
+        } else {
+            setcanUseSpeech(false);
+            console.warn("Browser doesn't support speech recognition.");
+        }
+    }, []);
 
     useEffect(() => {
         console.log('ME EJECUTO useSession', session);
+
+
         if (!session) return;
 
         // setLog((prev) => [
@@ -77,7 +89,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
         <section className="flex flex-col h-screen items-center justify-start min-h-screen p-4 bg-gray-100 w-full relative ">
 
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Chat</h1>
-            <div className="h-full overflow-y-auto pb-44 px-20 flex flex-col gap-10 w-full">
+            <div className="h-full overflow-y-auto pb-44 px-1 lg:px-20 flex flex-col gap-10 w-full">
                 {log.map((entry, index) => {
 
                     if (entry.role === 'user') {
@@ -125,7 +137,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
                 <div className='flex items-center justify-end mt-4 gap-5'>
 
-                    <CustomIconButton size='md' roundedFull variant='text' disabled={isLoading || (input.length > 1 && !listening)}
+                    <CustomIconButton size='md' roundedFull variant='text' disabled={!canUseSpeech || isLoading || (input.length > 1 && !listening)}
                         children={
 
                             listening ? <StopIcon className="size-5 " /> : (

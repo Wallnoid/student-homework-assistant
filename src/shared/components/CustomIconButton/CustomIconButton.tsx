@@ -32,9 +32,13 @@ export type CustomIconButtonProps = {
 
 }
 
+/*This component is a custom icon button that can be used throughout the application.
+It allows for different styles, sizes, and functionalities based on the props passed to it.
+It uses the IconButton component from Material Tailwind and applies custom styles based on the variant and other props.
+*/
 const CustomIconButton: React.FC<CustomIconButtonProps> = ({ variant = 'filled', size = 'md', children, backgroundColor, onClick, roundedFull = false, disabled = false, loading = false }) => {
 
-
+	// Define the style options for the button based on the variant
 	const styleOptions = {
 		filled: 'bg-gradient-to-br from-primary to-secondary',
 		outlined: 'bg-transparent border border-primary  text-primary',
@@ -43,6 +47,8 @@ const CustomIconButton: React.FC<CustomIconButtonProps> = ({ variant = 'filled',
 	}
 
 
+	// If a background color is provided and it is not 'none', use the IconButton component with the specified color
+	// This allows for a solid color button with the specified background color
 	if (backgroundColor && backgroundColor != 'none') {
 		return (
 			<IconButton

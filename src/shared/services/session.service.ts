@@ -16,7 +16,7 @@ export const updateSession = async (id: number, title: string) => {
 }
 
 
-export const deleteSession = async (id: number) => {
+export const deleteSessionS = async (id: number) => {
     const response = await interceptor.delete(`${API_URL}/sessions/${id}`)
     return response.data
 }

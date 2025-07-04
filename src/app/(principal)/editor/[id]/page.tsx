@@ -35,7 +35,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
 
     return (
 
-        <section className=" w-full h-fit   p-28 relative  bg-gray-50 ">
+        <section className=" w-full h-fit   pt-16 pb-28 px-5 lg:p-28 relative  bg-gray-50 ">
 
             {/* <div className="absolute top-20 left-28 flex items-center text-gray-600 gap-2">
                 <Spinner className="size-4" color="gray" />
@@ -62,9 +62,9 @@ const Page = ({ params }: { params: Promise<Params> }) => {
                     />
 
 
-                    <div className="grid grid-cols-6 gap-2 w-full  text-sm text-gray-700 items-center h-fit pt-5 ">
+                    <div className="grid lg:grid-cols-6  gap-4 w-full  text-sm text-gray-700 items-start justify-start h-fit pt-5 ">
 
-                        <div className="flex flex-row gap-2 items-center  ">
+                        <div className="flex flex-row gap-2 items-center ">
 
                             <ListBulletIcon className="size-5 " />
 

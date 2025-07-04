@@ -15,7 +15,7 @@ const Page: NextPage = () => {
     const { control, handleSubmit, fields, onSubmit, inputRefs, register, handleKeyDown, handleNavigateDown, handleNavigateUp, handleSplitLine, title, setTitle, handleActiveIAnote, handleActiveInput, tags, setTags, handleKeyDownIA, handleNewInput, handleDeleteIAInput } = useFormNotes()
 
     return (
-        <section className=" w-full h-fit p-28 relative  bg-gray-50 ">
+        <section className=" w-full h-fit pb-28 pt-16 px-5 lg:p-28 relative  bg-gray-50 ">
 
             {/* <div className="absolute top-20 left-28 flex items-center text-gray-600 gap-2">
                 <Spinner className="size-4" color="gray" />
@@ -41,7 +41,7 @@ const Page: NextPage = () => {
 
 
 
-                    <div className="grid grid-cols-6 gap-2 w-full  text-sm text-gray-700 items-center h-fit pt-5 ">
+                    <div className="grid lg:grid-cols-6  gap-2 w-full  text-sm text-gray-700 items-center h-fit pt-5 ">
 
                         <div className="flex flex-row gap-2 items-center  ">
 

@@ -15,13 +15,21 @@ export type CustomAdminNavBarProps = {
 }
 
 
+// This component is a custom navigation bar for the admin section of the application
 const CustomAdminNavBar: React.FC<CustomAdminNavBarProps> = ({ }) => {
 
+	// State to manage the open/close state of the navigation menu
+	// It starts as false, meaning the menu is closed by default
 	const [openNav, setOpenNav] = useState(false);
 
+	// Function to handle window resize events
 	const handleWindowResize = () =>
 		window.innerWidth >= 960 && setOpenNav(false);
 
+	// Effect to add and remove the resize event listener
+	// This ensures that the navigation menu closes when the window is resized to a width greater than or equal to 960 pixels
+	// The empty dependency array means this effect runs only once when the component mounts
+	// It also cleans up by removing the event listener when the component unmount
 	useEffect(() => {
 		window.addEventListener("resize", handleWindowResize);
 

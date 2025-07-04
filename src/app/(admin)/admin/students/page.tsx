@@ -17,51 +17,49 @@ import {
     Tab,
     IconButton,
     Tooltip,
+    Spinner,
 } from "@material-tailwind/react";
 import { CustomIconTextButton } from '@/shared/components/CustomIconTextButton';
 import { CustomButton } from '@/shared/components/CustomButton';
 import { useRouter } from 'next/navigation';
-import { useUsers } from '@/features/admin/hooks/useUsers';
+import { useUsers } from '@/features/admin/hooks/useUsers.hook';
 import { useCallback, useEffect } from 'react';
 import { StudentModal } from '@/features/admin/components/StudentModal';
 import { CustomIconButton } from '@/shared/components/CustomIconButton';
 import { useUserMe } from '@/shared/hooks/useUserMe.hook';
 
 
-const TABS = [
-    {
-        label: "All",
-        value: "all",
-    },
-    {
-        label: "Monitored",
-        value: "monitored",
-    },
-    {
-        label: "Unmonitored",
-        value: "unmonitored",
-    },
-];
 
-const TABLE_HEAD = ["Member", "Role", "Status", "Created At", "Actions"];
+const TABLE_HEAD = ["Miembro", "Rol", "Estado", "Creado En", "Acciones"];
 
 const Page: NextPage = () => {
     const router = useRouter()
 
-    const { users, isLoading, error, page, totalPages, setSearch, deleteUser } = useUsers()
+    const { users, isLoading, error, page, totalPages, setSearch, deleteUser, handlePageChange } = useUsers()
 
-    const { user } = useUserMe();
-
-
+    const { user, isLoading: isLoadingUser } = useUserMe();
 
     useEffect(() => {
         if (user) {
             if (user.role !== 'ADMIN' && user.role !== 'SUPER') {
-                // router.push('/')
+                router.push('/')
             }
+
+
         }
 
     }, [user])
+
+
+    if (isLoadingUser) {
+        return (
+            <div className="w-full h-full flex items-center justify-center">
+                <Spinner className="size-8" color="blue" />
+            </div>
+        );
+
+    }
+
 
 
 
@@ -73,14 +71,14 @@ const Page: NextPage = () => {
                     <div className="mb-8 flex items-center justify-between gap-8">
                         <div>
                             <Typography variant="h5" color="blue-gray">
-                                Members list
+                                Miembros
                             </Typography>
                             <Typography color="gray" className="mt-1 font-normal">
-                                See information about all members
+                                Información de los miembros del sistema
                             </Typography>
                         </div>
                         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <CustomButton label=" Return to Dashboard" variant="outlined" size="sm" onClick={() => {
+                            <CustomButton label=" Volver al Dashboard" variant="outlined" size="sm" onClick={() => {
                                 router.push('/')
                             }} />
 
@@ -89,15 +87,10 @@ const Page: NextPage = () => {
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-between gap-4 md:flex-row ">
-                        <Tabs value="all" className="w-full md:w-max">
-                            <TabsHeader>
-                                {TABS.map(({ label, value }) => (
-                                    <Tab key={value} value={value}>
-                                        &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                                    </Tab>
-                                ))}
-                            </TabsHeader>
-                        </Tabs>
+                        <div className='w-full md:w-max'>
+
+                        </div>
+
                         <div className="w-full md:w-72">
                             <Input
                                 onChange={(e) => setSearch(e.target.value)}
@@ -204,7 +197,7 @@ const Page: NextPage = () => {
                                                             {user.createdAt}
                                                         </Typography>
                                                     </td>
-                                                    <td className={classes}>
+                                                    <td className={`${classes} flex flex-row gap-2 `}>
                                                         <Tooltip content="Edit User">
 
                                                             <StudentModal student={user} />
@@ -233,10 +226,10 @@ const Page: NextPage = () => {
                         Page {page} of {totalPages}
                     </Typography>
                     <div className="flex gap-2">
-                        <Button variant="outlined" size="sm">
+                        <Button variant="outlined" size="sm" onClick={() => { handlePageChange(page - 1) }} disabled={page === 1}>
                             Previous
                         </Button>
-                        <Button variant="outlined" size="sm">
+                        <Button variant="outlined" size="sm" onClick={() => { handlePageChange(page + 1) }} disabled={page === totalPages}>
                             Next
                         </Button>
                     </div>
