@@ -153,7 +153,6 @@ export const useFormTags = ({ refresh }: FormTagsProps) => {
     // Function to fill the form with the data of a tag
     // This function is called when the user clicks on a tag to edit it
     const fillForm = (tag: NoteTag) => {
-        console.log(tag)
         setId(tag.id!);
         setName(tag.name);
         setColor(tag.color);

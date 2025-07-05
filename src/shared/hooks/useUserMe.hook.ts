@@ -52,7 +52,6 @@ export const useUserMe = () => {
     // This effect calls the `userMe` function to fetch the user data from the API
     useEffect(() => {
 
-        console.log("useUserMe hook executed");
         if (!load) return;
 
         try {
@@ -61,7 +60,6 @@ export const useUserMe = () => {
                 setUser(response.data);
 
                 setUserLocal(response.data);
-                console.log("User data fetched successfully:", response.data);
 
                 setOrg(response.data.organization);
 

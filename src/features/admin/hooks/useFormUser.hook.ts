@@ -114,7 +114,7 @@ export const useFormUser = ({ onSuccess, student }: { onSuccess: () => void, stu
         // If it does not exist, create a new user using the createMembers function
         if (student) {
             updateMember(user).then((res: CreateUserResponse) => {
-                console.log(res)
+
                 // If the update is successful, set the loading state to false, clear the error state, and call the onSuccess callback
                 setLoading(false)
                 // The error state is set to null to clear any previous error messages
@@ -123,7 +123,7 @@ export const useFormUser = ({ onSuccess, student }: { onSuccess: () => void, stu
                 // This could include updating the user list, showing a success message, etc.
                 onSuccess()
             }).catch((err: AxiosError) => {
-                console.log(err)
+
                 setLoading(false)
                 setError((err.response?.data as CreateUserResponse).message.content[0])
             })
@@ -132,7 +132,7 @@ export const useFormUser = ({ onSuccess, student }: { onSuccess: () => void, stu
             // If the student does not exist, create a new user
 
             createMembers(user).then((res: CreateUserResponse) => {
-                console.log(res)
+
                 // If the creation is successful, set the loading state to false, clear the error state, and call the onSuccess callback
                 setLoading(false)
                 // The error state is set to null to clear any previous error messages
@@ -140,7 +140,7 @@ export const useFormUser = ({ onSuccess, student }: { onSuccess: () => void, stu
                 // The onSuccess callback is used to perform any additional actions after the user is created
                 onSuccess()
             }).catch((err: AxiosError) => {
-                console.log(err)
+
                 setLoading(false)
                 setError((err.response?.data as CreateUserResponse).message.content[0])
             })

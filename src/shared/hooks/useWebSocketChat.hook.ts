@@ -53,6 +53,8 @@ export const useWebSocketChat = (id?: number) => {
     // The `useLoadChatsStore` is used to determine if chats should be loaded
     const setLoadChats = useLoadChatsStore((state: any) => state.setLoad);
 
+
+
     const router = useRouter()
     const pathname = usePathname();
 
@@ -61,7 +63,6 @@ export const useWebSocketChat = (id?: number) => {
     useEffect(() => {
         const token = getToken();
         setLog([]);
-        console.log('ME EJECITO useWebSocketChat');
         if (id) {
             id = parseInt(id.toString());
             if (!isNaN(id)) {
@@ -91,10 +92,10 @@ export const useWebSocketChat = (id?: number) => {
         socket.off('chat_response');
 
         socket.on('chat_response', (data: ChatSessionResponse) => {
-            console.log('📩 Respuesta del servidor:', data);
             setMessage(data.message.content.join(' '));
 
-            data.data.role = 'assistant'; // Asegurarse de que el rol sea 'assistant'
+            data.data.role = 'assistant';
+
 
             setAnimation(true);
 
@@ -158,7 +159,6 @@ export const useWebSocketChat = (id?: number) => {
         setLog((prev) => [...prev, newMessage]);
 
         socket.emit('chat_message', payload.data);
-        console.log('📤 Enviando mensaje:', payload.data);
 
         setInput('');
 

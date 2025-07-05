@@ -42,8 +42,7 @@ export const useTags = (selectedIdTags: number[], handleAutoSubmit: () => void) 
         getTags().then((tags: TagResponse) => {
             setTags(tags.data)
 
-            console.log('tags', tags)
-            console.log('asdasdasdasdasd fadfasd', tags.data.filter((tag) => selectedIdTags.includes(tag.id!)))
+
             setTagsSelected(tags.data.filter((tag) => selectedIdTags.includes(tag.id!)));
 
 

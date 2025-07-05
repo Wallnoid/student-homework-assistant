@@ -41,15 +41,10 @@ const Page = ({ params }: { params: Promise<Params> }) => {
     }, []);
 
     useEffect(() => {
-        console.log('ME EJECUTO useSession', session);
 
 
         if (!session) return;
 
-        // setLog((prev) => [
-        //     ...prev,
-        //     `Sesión iniciada: ${session.title} - ${session.startedAt.toLocaleString()}`,
-        // ]);
 
         setLog(() => session.messages ?? []);
 
@@ -102,7 +97,7 @@ const Page = ({ params }: { params: Promise<Params> }) => {
                     }
 
 
-                    return <MarkDownConverter key={index} content={entry.content} animated={index === log.length - 1 && animation} />
+                    return <MarkDownConverter key={index} content={entry.content} animated={(index === log.length - 1 && animation)} />
 
                 })}
 

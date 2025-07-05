@@ -73,7 +73,6 @@ const AsignOrgAdminModal: React.FC<AsignOrgAdminModalProps> = ({ orgId }) => {
 		// Call the updateMember function with the adminId and orgId
 		updateMember({ id: adminId, organizationId: orgId! })
 			.then((response) => {
-				console.log(response);
 				// If the update is successful, we show a success message and close the modal
 				setLoading(false);
 				setOpen(false);

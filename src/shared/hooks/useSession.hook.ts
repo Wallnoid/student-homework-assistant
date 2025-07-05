@@ -33,8 +33,7 @@ export const useSession = (id: number) => {
         setError(false)
         getSessionById(id).then((session: SessionResponse) => {
             setSession(session.data as ChatSession)
-            console.log('session useSession')
-            console.log(session)
+
         }).catch((error) => {
             setError(error)
         }).finally(() => {

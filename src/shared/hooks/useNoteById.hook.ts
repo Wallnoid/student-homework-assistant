@@ -35,8 +35,7 @@ export const useNoteById = (id: string) => {
         setError(false)
         getNoteById(id).then((note: NoteHeaderResponse) => {
             setNote(note.data as Note)
-            console.log('note useNoteById')
-            console.log(note)
+
         }).catch((error) => {
             setError(error)
         }).finally(() => {

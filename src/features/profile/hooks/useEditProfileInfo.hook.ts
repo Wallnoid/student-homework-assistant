@@ -84,7 +84,6 @@ export const useEditProfileInfo = () => {
     // This function is called when the form is submitted
     // It takes the form data as an argument and processes it to update the user's profile information
     const onSubmit = (data: EditProfileFormValues) => {
-        console.log("Form submitted with data:", data);
         setLoading(true);
 
         // Retrieve the current user data from local storage
@@ -106,7 +105,6 @@ export const useEditProfileInfo = () => {
 
         // Send the updated user data to the server
         updateMember(userToSend).then((res) => {
-            console.log("Update response:", res);
             setError(null);
             setLoading(false);
             setUser(prev => prev ? {
@@ -129,7 +127,6 @@ export const useEditProfileInfo = () => {
             // Set the loading state to false after the update is successful
             setLoad(true);
 
-            console.log("User updated successfully:", res);
 
             toast.success("Se ha actualizado el perfil correctamente.");
         }).catch((err) => {

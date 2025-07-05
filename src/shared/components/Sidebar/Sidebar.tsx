@@ -132,7 +132,6 @@ const Sidebar: React.FC<SidebarProps> = ({ }) => {
 		}
 		if (pathname.includes('chat')) {
 			// setLoadChats(true);
-			console.log('setLoadChats true')
 			setOpenChat(1);
 			setOpen(0);
 		}

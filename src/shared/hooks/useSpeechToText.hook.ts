@@ -37,8 +37,7 @@ export const useSpeechToText = () => {
     // Functions to start and stop listening for speech input
     // These functions use the SpeechRecognition API to control the speech recognition process
     const startListening = () => {
-        console.log("Starting speech recognition...");
-        console.log("Browser supports speech recognition:", browserSupportsSpeechRecognition);
+
         if (browserSupportsSpeechRecognition) {
             SpeechRecognition.startListening({ continuous: true });
         }

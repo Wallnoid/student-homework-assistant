@@ -22,10 +22,7 @@ const Page: NextPage = () => {
   const chatsHome = useChatsHomeStore((state: any) => state.chatsHome);
   const loadNotes = useLoadNotesStore((state: any) => state.load)
   const loadChats = useLoadChatsStore((state: any) => state.load);
-  useEffect(() => {
-    console.log('chatsHome', chatsHome);
-    console.log('user', user);
-  }, [chatsHome]);
+
 
 
   const textGradient = 'bg-gradient-to-r from-primary  to-secondary inline-block text-transparent bg-clip-text'

@@ -29,8 +29,7 @@ export function stringToLines(text: string) {
     const lines = text.split('\n').map((lineContent) => {
         return { content: lineContent }
     })
-    console.log('lines')
-    console.log(lines)
+
     return lines
 }
 
@@ -44,8 +43,6 @@ export function lineToString(lines: Line[] | undefined) {
         return ''
     }
     let stringToReturn = ''
-    console.log('lines')
-    console.log(lines)
 
     const lineLength = lines.length
 
@@ -60,9 +57,5 @@ export function lineToString(lines: Line[] | undefined) {
 
     }
 
-
-
-    console.log('stringToReturn')
-    console.log(stringToReturn)
     return stringToReturn
 }

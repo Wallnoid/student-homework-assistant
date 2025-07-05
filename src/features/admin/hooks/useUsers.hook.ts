@@ -85,7 +85,6 @@ export const useUsers = (defaultLimit?: number) => {
 
         try {
             const response = await getMembers({ page: fetchProps.page, limit: fetchProps.limit, search: fetchProps.search, organizationId: organizationId === 1 ? undefined : organizationId })
-            console.log(response)
 
             const filteredRecords = response.data.records.filter((user: User) => user.id !== userLocal?.id)
 
@@ -141,7 +140,6 @@ export const useUsers = (defaultLimit?: number) => {
     // useEffect hook to fetch users when the debouncedSearch state changes
     // It calls the fetchUsers function with the current page, limit, and debounced search
     useEffect(() => {
-        console.log(debouncedSearch)
         fetchUsers(
             { page, limit, search: debouncedSearch }
         )
@@ -152,7 +150,6 @@ export const useUsers = (defaultLimit?: number) => {
     // useEffect hook to fetch users when the page or limit state changes
     // It calls the fetchUsers function with the current page, limit, and debounced search
     const handlePageChange = (pageIn: number) => {
-        console.log("handlePageChange", page)
 
         setPage(pageIn)
 

@@ -94,14 +94,12 @@ export const useFormOrg = ({ onSuccess, org }: { onSuccess: () => void, org?: Or
             // Update the organization using the updateOrganizations function
             // It returns a promise that resolves to a CreateUserResponse object
             updateOrganizations(organization).then((res: CreateUserResponse) => {
-                console.log(res)
                 // If the update is successful, set the loading state to false, clear the error state, and call the onSuccess callback
                 setLoading(false)
                 setError(null)
                 // The onSuccess callback is used to perform any additional actions after the organization is created or updated
                 onSuccess()
             }).catch((err: AxiosError) => {
-                console.log(err)
                 setLoading(false)
                 setError((err.response?.data as CreateUserResponse).message.content[0])
             })
@@ -111,14 +109,12 @@ export const useFormOrg = ({ onSuccess, org }: { onSuccess: () => void, org?: Or
             // It returns a promise that resolves to a CreateUserResponse object
             // The createOrganizations function is used to create a new organization in the system
             createOrganizations(organization).then((res: CreateUserResponse) => {
-                console.log(res)
                 // If the creation is successful, set the loading state to false, clear the error state, and call the onSuccess callback
                 setLoading(false)
                 setError(null)
                 // The onSuccess callback is used to perform any additional actions after the organization is created
                 onSuccess()
             }).catch((err: AxiosError) => {
-                console.log(err)
                 setLoading(false)
                 setError((err.response?.data as CreateUserResponse).message.content[0])
             })

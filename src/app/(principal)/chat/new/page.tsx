@@ -57,7 +57,7 @@ const Page = () => {
                     }
 
 
-                    return <MarkDownConverter key={index} content={entry.content} speed={5} />
+                    return <MarkDownConverter key={index} content={entry.content} animated speed={5} />
 
                 })}
 

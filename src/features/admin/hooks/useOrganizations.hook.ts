@@ -82,7 +82,7 @@ export const useOrganizations = () => {
         setIsLoading(true)
         try {
             const response = await getOrganizations({ page: fetchProps.page, limit: fetchProps.limit, search: fetchProps.search, })
-            console.log(response)
+
 
             setOrganizations(response.data.records)
             setTotal(response.data.total)
@@ -110,7 +110,6 @@ export const useOrganizations = () => {
                 )
             }).catch((error) => {
                 setError(error as string)
-                console.log(error)
                 toast.error("Error al eliminar la organización")
             })
         } catch (error) {
@@ -123,7 +122,6 @@ export const useOrganizations = () => {
     // This effect runs when the component mounts or when the loadOrg state changes
     // It fetches the organizations based on the current page, limit, and search term
     useEffect(() => {
-        console.log(debouncedSearch)
 
         if (loadOrg) {
             fetchOrganizations(
@@ -137,7 +135,6 @@ export const useOrganizations = () => {
     // This effect runs when the debouncedSearch state changes
     // It fetches the organizations based on the current page, limit, and debounced search
     useEffect(() => {
-        console.log(debouncedSearch)
         fetchOrganizations(
             { page, limit, search: debouncedSearch }
         )

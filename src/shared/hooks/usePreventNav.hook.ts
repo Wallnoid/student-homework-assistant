@@ -78,7 +78,6 @@ export default function useBlockNavigation(message: string, shouldBlock: boolean
         // If the note is empty (content, title, and tagsIds are all empty), delete the note
         // This is to prevent saving an empty note
         if ((note.content === "/n" || note.content === "") && note.title === "" && note.tagsIds.length === 0) {
-            console.log('delete entró');
             deleteNote();
             return;
         }
